@@ -54,29 +54,29 @@ class Controller {
 
 int main()
 {
-    C12832 LCD(D11, D13, D12, D7, D10);                          //All necessary objects created lines 165-177
+    C12832 LCD(D11, D13, D12, D7, D10);                          
 
     Joystick jstick(A2, A3, A4, A5, D4); 
     Controller controller();
 
     while(1) {
     switch (controller.returnState()) {
-    case (initialisation) :                                       //State to initialise the timer and transition to the next state
-        ;                                       //Transition state
-    case (home) :                                            //State to set the timer's duration
-        ;                                          //ISR attached to rising edge of fire to transition to next state
+    case (initialisation) :                                       
+        ;                                       
+    case (home) :                                            
+        ;                                          
     break;
-    case(commands) :                                                 //State to start the timer
-        ;                                          //Transition state to timer_running
+    case(commands) :                                                 
+        ;                                          
     break;
-    case(camera) :                                               //State for when the itmer is running
+    case(camera) :                                               
         ;
     break;
-    case (sensors) :                                                 //State for pausing the itmer
-		;                                                //Transition to waiting state
+    case(sensors) :                                               
+        ;
     break;
     default :
-        state = initialisation;                                             //If no state is matched, transition back to initialisation to soft-reset the program
+        state = initialisation;                                             
  }
  }
 }
