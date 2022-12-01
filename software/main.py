@@ -15,7 +15,7 @@ def main():
 	velocity_publisher, vel_msg = mf.init()
 	# angle_deg, distance = lt.find_laser()	### RECEIVE COMMAND FROM LASER TRACKER
 	angle_deg = 40
-	distance = 3
+	distance = 1
 	mf.send_motion_command(vel_msg, velocity_publisher, angle_deg, distance)
 
 
