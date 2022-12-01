@@ -6,7 +6,7 @@ from geometry_msgs.msg import Twist
 import numpy as np
 
 def rotate(angle_deg):
-    rospy.init_node('motion_commands', anonymous=True) 
+    rospy.init_node('rotate_commander', anonymous=True) 
     velocity_publisher = rospy.Publisher('/cmd_vel', Twist, queue_size=10) #"turtle1"???
     vel_msg = Twist()
 
