@@ -38,7 +38,7 @@ def rotate(vel_msg, velocity_publisher, angle_deg):
 		current_angle = angular_speed*(t1-t0)
 	stop(vel_msg, velocity_publisher)
 	print("test_in_function")
-	rospy.spin() #???
+	# rospy.spin() #???
 
 def move(vel_msg, velocity_publisher, distance):
 	speed = 0.3 #m/s
