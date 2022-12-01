@@ -60,4 +60,5 @@ def move(vel_msg, velocity_publisher, distance):
 def send_motion_command(vel_msg, velocity_publisher, angle_deg, distance): 
 	stop(vel_msg, velocity_publisher)
 	rotate(vel_msg, velocity_publisher, angle_deg) #wait till rotation is done? how? rospy.spin?
+	print("test")
 	move(vel_msg, velocity_publisher, distance)
