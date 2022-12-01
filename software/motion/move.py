@@ -5,7 +5,7 @@ import rospy
 from geometry_msgs.msg import Twist
 
 def move(distance):
-    rospy.init_node('robot_cleaner', anonymous=True) #"robot_cleaner"???
+    rospy.init_node('motion_commands', anonymous=True) #"robot_cleaner"???
     velocity_publisher = rospy.Publisher('/turtle1/cmd_vel', Twist, queue_size=10) #"turtle1"???
     vel_msg = Twist()
 

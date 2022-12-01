@@ -6,8 +6,8 @@ from geometry_msgs.msg import Twist
 import numpy as np
 
 def rotate(angle_deg):
-    rospy.init_node('robot_cleaner', anonymous=True) #"robot_cleaner"???
-    velocity_publisher = rospy.Publisher('/turtle1/cmd_vel', Twist, queue_size=10) #"turtle1"???
+    rospy.init_node('motion_commands', anonymous=True) 
+    velocity_publisher = rospy.Publisher('/cmd_vel', Twist, queue_size=10) #"turtle1"???
     vel_msg = Twist()
 
     angular_speed = np.pi/2 #180deg in 2s
