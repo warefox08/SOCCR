@@ -1,6 +1,6 @@
 from lzma import MF_BT3
 import sys, os
-sys.path.append(os.getcwd() + "\\motion") #add function folder to path
+sys.path.append(os.path.join(os.getcwd(), "motion")) #add function folder to path
 # sys.path.append(os.getcwd() + "\\laser_tracking") #add function folder to path
 import motion_functions as mf
 # import laser_tracking as lt
