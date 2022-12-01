@@ -1,7 +1,10 @@
-import rospy
-from geometry_msgs.msg import Twist
+# import rospy
+# from geometry_msgs.msg import Twist
 import numpy as np
 
+def import_test():
+	print("import successful")
+	return 1, "2"
 
 def stop(vel_msg, velocity_publisher):
 	vel_msg.linear.x=0
