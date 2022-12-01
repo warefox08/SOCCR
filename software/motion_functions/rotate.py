@@ -1,5 +1,6 @@
-### http://wiki.ros.org/turtlesim/Tutorials/Rotating%20Left%20and%20Right
+#!/usr/bin/env python
 
+### http://wiki.ros.org/turtlesim/Tutorials/Rotating%20Left%20and%20Right
 import rospy
 from geometry_msgs.msg import Twist
 import numpy as np
@@ -30,7 +31,7 @@ def rotate(angle_deg):
     t0 = rospy.Time.now().to_sec()
     current_angle = 0
 
-    while (current_angle < relative_angle):
+    while (current_angle < angle):
         velocity_publisher.publish(vel_msg)
         t1 = rospy.Time.now().to_sec()
         current_angle = angular_speed*(t1-t0)
@@ -38,7 +39,7 @@ def rotate(angle_deg):
     vel_msg.angular.z = 0
     velocity_publisher.publish(vel_msg)
 
-    rospy.spin()
+    rospy.spin() #???
 
 if __name__ == '__main__':
     try:
