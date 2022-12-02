@@ -16,9 +16,9 @@ def main():
 	
 	velocity_publisher, vel_msg = mf.init()
 	[dc, fov_h, res_h, res_v] = lt.init()
-	
-	command_received_from_microcontroller = 0
+
 	while(1):
+		command_received_from_microcontroller = 0
 		if (command_received_from_microcontroller):
 			angle_deg, distance = lt.find_vector_to_laser(dc, fov_h, res_h, res_v)
 			mf.send_motion_command(vel_msg, velocity_publisher, angle_deg, distance)
