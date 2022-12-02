@@ -1,3 +1,4 @@
+#!/usr/bin/env python
 from lzma import MF_BT3
 import sys, os
 sys.path.append(os.path.join(os.getcwd(), "motion")) #add function folder to path

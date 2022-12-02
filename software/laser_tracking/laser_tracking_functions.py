@@ -1,3 +1,4 @@
+#!/usr/bin/env python
 import cv2
 import pyrealsense2
 from realsense_depth import * #dependency --> realsense_depth.py, no other files/ scripts necessary 
