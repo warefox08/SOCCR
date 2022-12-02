@@ -79,7 +79,9 @@ def find_laser_cords(points, fov_h, res_h, depth_frame, color_frame, red_filter)
     w = (l)*np.sin(a) # The 'width'i.e. distance between the origin point and the laser point (alt to distance_x)
     
     show_data(red_filter, color_frame, p1, p2, distance_x, distance_origin, angle_deg_h)
-    log_data(p1, p2, distance_x, angle_deg_h)
+    # log_data(p1, p2, distance_x, angle_deg_h)
+
+    return angle, distance
 
 def show_data(red_filter, color_frame, p1, p2, distance_x, distance_origin, angle_deg_h):
     cv2.imshow('red_filter', red_filter)
@@ -108,8 +110,7 @@ def log_data(p1, p2, distance_x, angle_deg_h):
     with open('data.txt', 'w') as f:
         f.write(write_string)
 
-def find_vector_to_laser():
-    [dc, fov_h, res_h, res_v] = init()
+def find_vector_to_laser(dc, fov_h, res_h, res_v):
     laser_found = 0
     while(not laser_found):
         [laser_found, angle, distance] = search_for_laser(dc, fov_h, res_h)
@@ -117,3 +118,9 @@ def find_vector_to_laser():
         if key == 27: # esc key to break 
             break
     return angle, distance
+
+
+if __name__ == "__main__":
+    [dc, fov_h, res_h, res_v] = init()
+    while(1):
+        find_vector_to_laser(dc, fov_h, res_h, res_v)
