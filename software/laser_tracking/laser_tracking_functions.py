@@ -81,7 +81,7 @@ def find_laser_cords(points, fov_h, res_h, depth_frame, color_frame, red_filter)
     show_data(red_filter, color_frame, p1, p2, distance_x, distance_origin, angle_deg_h)
     # log_data(p1, p2, distance_x, angle_deg_h)
 
-    return angle, distance
+    return angle_deg_h, distance_x
 
 def show_data(red_filter, color_frame, p1, p2, distance_x, distance_origin, angle_deg_h):
     cv2.imshow('red_filter', red_filter)
@@ -123,4 +123,5 @@ def find_vector_to_laser(dc, fov_h, res_h, res_v):
 if __name__ == "__main__":
     [dc, fov_h, res_h, res_v] = init()
     while(1):
-        find_vector_to_laser(dc, fov_h, res_h, res_v)
+        angle, distance = find_vector_to_laser(dc, fov_h, res_h, res_v)
+        print("a: " + str(angle) + " d: " + str(distance))
