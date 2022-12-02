@@ -14,10 +14,13 @@ def main():
 		print(test2)
 	
 	velocity_publisher, vel_msg = mf.init()
-	angle_deg, distance = lt.find_vector_to_laser()	### RECEIVE COMMAND FROM LASER TRACKER
-	# angle_deg = 40
-	# distance = 1
-	mf.send_motion_command(vel_msg, velocity_publisher, angle_deg, distance)
+
+	command_received_from_microcontroller = 0
+	while(1):
+		if (command_received_from_microcontroller):
+			angle_deg, distance = lt.find_vector_to_laser()	### RECEIVE COMMAND FROM LASER TRACKER
+			mf.send_motion_command(vel_msg, velocity_publisher, angle_deg, distance)
+			command_received_from_microcontroller = 0
 
 
 if __name__ == "__main__":
