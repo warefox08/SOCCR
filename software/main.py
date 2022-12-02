@@ -1,9 +1,10 @@
 from lzma import MF_BT3
 import sys, os
 sys.path.append(os.path.join(os.getcwd(), "motion")) #add function folder to path
-# sys.path.append(os.getcwd() + "\\laser_tracking") #add function folder to path
+sys.path.append(os.getcwd() + "\\laser_tracking") #add function folder to path
 import motion_functions as mf
-# import laser_tracking as lt
+import laser_tracking_functions as lt
+# import laser_tracking_wip as lt
 
 def main():
 	debug=0
@@ -13,9 +14,9 @@ def main():
 		print(test2)
 	
 	velocity_publisher, vel_msg = mf.init()
-	# angle_deg, distance = lt.find_laser()	### RECEIVE COMMAND FROM LASER TRACKER
-	angle_deg = 40
-	distance = 1
+	angle_deg, distance = lt.find_vector_to_laser()	### RECEIVE COMMAND FROM LASER TRACKER
+	# angle_deg = 40
+	# distance = 1
 	mf.send_motion_command(vel_msg, velocity_publisher, angle_deg, distance)
 
 
