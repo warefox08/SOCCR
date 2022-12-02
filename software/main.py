@@ -6,7 +6,7 @@ sys.path.append(os.path.join(os.getcwd(), "laser_tracking")) #add function folde
 # sys.path.append(os.path.join(os.getcwd(), "comms"))
 import motion_functions as mf
 import laser_tracking_functions as lt
-# import listener
+import listener
 
 
 def main():
@@ -21,8 +21,7 @@ def main():
 
 	while(1):
 		command_received_from_microcontroller = 0
-		# listener.listener()
-		# command_received_from_microcontroller = data.data
+		listener.on_message
 		if (command_received_from_microcontroller):
 			angle_deg, distance = lt.find_vector_to_laser(dc, fov_h, res_h, res_v)
 			mf.send_motion_command(vel_msg, velocity_publisher, angle_deg, distance)
