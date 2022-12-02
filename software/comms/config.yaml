@@ -4,5 +4,5 @@ broker:
 bridge:
   mqtt2ros:
     - mqtt_topic: Team10/Command
-	    ros_topic: /Team10/Execute
-		  primitive: true
+      ros_topic: /Team10/Execute
+      primitive: true
