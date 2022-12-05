@@ -21,7 +21,7 @@ def main():
 
 	while(1):
 		command_received_from_microcontroller = 0
-		listener.on_message
+		command_received_from_microcontroller = listener.on_message
 		if (command_received_from_microcontroller):
 			angle_deg, distance = lt.find_vector_to_laser(dc, fov_h, res_h, res_v)
 			mf.send_motion_command(vel_msg, velocity_publisher, angle_deg, distance)
