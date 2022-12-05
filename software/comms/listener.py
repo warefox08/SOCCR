@@ -4,6 +4,7 @@ import paho.mqtt.client as mqtt
 from std_msgs.msg import String
 
 def on_message(client, userdata, msg):
+   print ("on_message_entered")
    return True
 
 def init():
