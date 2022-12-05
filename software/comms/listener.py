@@ -10,6 +10,7 @@ def init():
    client = mqtt.Client()    
    client.on_message = on_message
    client.connect("192.168.43.221", 1883, 60)
+   client.subscribe("Team10/Command")
 
 if __name__ == '__main__':
     init()
