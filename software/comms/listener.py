@@ -12,6 +12,7 @@ def init():
    client.on_message = on_message
    client.connect("192.168.215.183", 1883, 60)
    client.subscribe("Team10/Command")
+   client.loop_forever()
    return client
 
 if __name__ == '__main__':

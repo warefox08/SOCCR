@@ -22,7 +22,7 @@ def main():
 	print("START")
 	while(1):
 		command_received_from_microcontroller = 0
-		command_received_from_microcontroller = client.on_message
+		#command_received_from_microcontroller = client.on_message
 		if (command_received_from_microcontroller):
 			print("ENTERED")
 			# angle_deg, distance = lt.find_vector_to_laser(dc, fov_h, res_h, res_v)
