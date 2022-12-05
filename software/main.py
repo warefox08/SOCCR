@@ -17,7 +17,7 @@ def main():
 	
 	# velocity_publisher, vel_msg = mf.init()
 	# [dc, fov_h, res_h, res_v] = lt.init()
-	client = listener.init()
+	# client = listener.init()
 	print("START")
 	while(1):
 		msg = subscribe.simple("Team10/command", hostname="192.168.215.183")
