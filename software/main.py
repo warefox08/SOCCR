@@ -19,7 +19,7 @@ def main():
 	# velocity_publisher, vel_msg = mf.init()
 	# [dc, fov_h, res_h, res_v] = lt.init()
 	client = listener.init()
-
+	print("START")
 	while(1):
 		client.on_message = 0
 		command_received_from_microcontroller = client.on_message

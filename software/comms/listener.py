@@ -9,7 +9,7 @@ def on_message(client, userdata, msg):
 def init():
    client = mqtt.Client()    
    client.on_message = on_message
-   client.connect("192.168.43.221", 1883, 60)
+   client.connect("192.168.215.183", 1883, 60)
    client.subscribe("Team10/Command")
    return client
 
