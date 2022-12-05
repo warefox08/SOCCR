@@ -21,7 +21,7 @@ def main():
 	client = listener.init()
 	print("START")
 	while(1):
-		client.on_message = 0
+		command_received_from_microcontroller = 0
 		command_received_from_microcontroller = client.on_message
 		if (command_received_from_microcontroller):
 			print("ENTERED")
