@@ -20,7 +20,7 @@ def main():
 	# client = listener.init()
 	print("START")
 	while(1):
-		msg = subscribe.simple("Team10/command", hostname="192.168.215.183")
+		msg = subscribe.simple("Team10/Command", hostname="192.168.215.183")
 
 		#command_received_from_microcontroller = client.on_message
 		if (msg.payload == "1"):
