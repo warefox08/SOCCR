@@ -6,8 +6,7 @@ import sys, os
 sys.path.append(os.path.join(os.getcwd(), "comms"))
 # import motion_functions as mf
 # import laser_tracking_functions as lt
-import paho.mqtt.subscribe as subscribe
-
+import listener as comms
 def main():
 	# debug=0
 	# if debug==1:
@@ -20,15 +19,13 @@ def main():
 	# client = listener.init()
 	print("START")
 	while(1):
-		msg = subscribe.simple("Team10/Command", hostname="192.168.215.183")
 
 		#command_received_from_microcontroller = client.on_message
-		if (msg.payload == "1"):
+		if (= "1"):
 			print("ENTERED")
 			# angle_deg, distance = lt.find_vector_to_laser(dc, fov_h, res_h, res_v)
 			# mf.send_motion_command(vel_msg, velocity_publisher, angle_deg, distance)
-			msg.payload = 0
-
+			
 
 if __name__ == "__main__":
 	main()
