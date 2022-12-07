@@ -6,7 +6,8 @@ import sys, os
 sys.path.append(os.path.join(os.getcwd(), "comms"))
 # import motion_functions as mf
 # import laser_tracking_functions as lt
-import listener as comms
+import listener
+
 def main():
 	# debug=0
 	# if debug==1:
@@ -21,7 +22,7 @@ def main():
 	while(1):
 
 		#command_received_from_microcontroller = client.on_message
-		if (= "1"):
+		if ():
 			print("ENTERED")
 			# angle_deg, distance = lt.find_vector_to_laser(dc, fov_h, res_h, res_v)
 			# mf.send_motion_command(vel_msg, velocity_publisher, angle_deg, distance)
