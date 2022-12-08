@@ -3,7 +3,7 @@ from lzma import MF_BT3
 import sys, os
 # sys.path.append(os.path.join(os.getcwd(), "motion")) #add function folder to path
 # sys.path.append(os.path.join(os.getcwd(), "laser_tracking")) #add function folder to path
-sys.path.append(os.path.join(os.getcwd(), "comms"))
+sys.path.append(os.path.join(os.getcwd(), "software/comms"))
 # import motion_functions as mf
 # import laser_tracking_functions as lt
 import listener
