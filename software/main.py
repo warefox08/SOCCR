@@ -6,6 +6,8 @@ import sys, os
 sys.path.append(os.path.join(os.getcwd(), "software/comms"))
 # import motion_functions as mf
 # import laser_tracking_functions as lt
+
+flag=0
 import listener
 
 def main():
@@ -17,8 +19,8 @@ def main():
 	
 	# velocity_publisher, vel_msg = mf.init()
 	# [dc, fov_h, res_h, res_v] = lt.init()
-	flag=0
-	listener.init(flag)
+	
+	listener.init()
 	print("START")
 	while(1):
 		if flag == 1:
