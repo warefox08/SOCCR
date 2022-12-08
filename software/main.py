@@ -17,7 +17,7 @@ def main():
 	
 	# velocity_publisher, vel_msg = mf.init()
 	# [dc, fov_h, res_h, res_v] = lt.init()
-	# client = listener.init()
+	listener.init()
 	print("START")
 	while(1):
 

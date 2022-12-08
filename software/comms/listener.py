@@ -6,7 +6,7 @@ from std_msgs.msg import String
 def init():
     rospy.init_node("listen")
     rospy.loginfo("ROS Serial Listener")
-    port_name = rospy.get_param('~tcp_port','TCP')
+    port_name = rospy.get_param('~tcp_port','tcp')
     baud = int(rospy.get_param('~baud','57600'))
 
 
