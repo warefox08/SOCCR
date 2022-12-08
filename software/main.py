@@ -17,10 +17,13 @@ def main():
 	
 	# velocity_publisher, vel_msg = mf.init()
 	# [dc, fov_h, res_h, res_v] = lt.init()
-	listener.init()
+	flag=0
+	listener.init(flag)
 	print("START")
 	while(1):
-
+		if flag == 1:
+			print("flag raised")
+			flag = 0
 		#command_received_from_microcontroller = client.on_message
 		if ():
 			print("ENTERED")
