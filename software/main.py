@@ -7,8 +7,7 @@ sys.path.append(os.path.join(os.getcwd(), "software/comms"))
 # import motion_functions as mf
 # import laser_tracking_functions as lt
 
-flag=0
-import listener
+import listener_class
 
 def main():
 	# debug=0
@@ -19,13 +18,13 @@ def main():
 	
 	# velocity_publisher, vel_msg = mf.init()
 	# [dc, fov_h, res_h, res_v] = lt.init()
-	
+	listener = listener_class.listener()
 	listener.init()
 	print("START")
 	while(1):
-		if flag == 1:
+		if listener.flag == 1:
 			print("flag raised")
-			flag = 0
+			listener.lower_flag()
 		#command_received_from_microcontroller = client.on_message
 		if ():
 			print("ENTERED")
