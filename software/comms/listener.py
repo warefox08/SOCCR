@@ -2,7 +2,7 @@
 import rospy
 from rosserial_python import SerialClient, RosSerialServer
 from std_msgs.msg import String
-def callback():
+def callback(arg):
     print("Message Received")
 
 def init():
