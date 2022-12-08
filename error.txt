@@ -1,0 +1,37 @@
+Traceback (most recent call last):
+  File "/home/trajche/catkin_ws/src/rosserial/rosserial_python/src/rosserial_python/SerialClient.py", line 475, in run
+    if self.port.inWaiting() < 1:
+  File "/home/trajche/catkin_ws/src/rosserial/rosserial_python/src/rosserial_python/SerialClient.py", line 312, in inWaiting
+    chunk = self.socket.recv(1, socket.MSG_DONTWAIT|socket.MSG_PEEK)
+ConnectionResetError: [Errno 104] Connection reset by peer
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/trajche/catkin_ws/devel/lib/rosserial_python/serial_node.py", line 15, in <module>
+    exec(compile(fh.read(), python_script, 'exec'), context)
+  File "/home/trajche/catkin_ws/src/rosserial/rosserial_python/nodes/serial_node.py", line 80, in <module>
+    server.listen()
+  File "/home/trajche/catkin_ws/src/rosserial/rosserial_python/src/rosserial_python/SerialClient.py", line 255, in listen
+    self.startSerialClient()
+  File "/home/trajche/catkin_ws/src/rosserial/rosserial_python/src/rosserial_python/SerialClient.py", line 261, in startSerialClient
+    client.run()
+  File "/home/trajche/catkin_ws/src/rosserial/rosserial_python/src/rosserial_python/SerialClient.py", line 555, in run
+    self.port.flushOutput()
+AttributeError: 'RosSerialServer' object has no attribute 'flushOutput'
+[INFO] [1670519672.553337]: Sending tx stop request
+[INFO] [1670519672.554933]: shutdown hook activated
+Exception in thread Thread-6:
+Traceback (most recent call last):
+  File "/usr/lib/python3.8/threading.py", line 932, in _bootstrap_inner
+    self.run()
+  File "/usr/lib/python3.8/threading.py", line 870, in run
+    self._target(*self._args, **self._kwargs)
+  File "/home/trajche/catkin_ws/src/rosserial/rosserial_python/src/rosserial_python/SerialClient.py", line 788, in processWriteQueue
+    self._write(data)
+  File "/home/trajche/catkin_ws/src/rosserial/rosserial_python/src/rosserial_python/SerialClient.py", line 749, in _write
+    self.port.write(data)
+  File "/home/trajche/catkin_ws/src/rosserial/rosserial_python/src/rosserial_python/SerialClient.py", line 294, in write
+    totalsent += self.socket.send(data[totalsent:])
+OSError: [Errno 9] Bad file descriptor
+
