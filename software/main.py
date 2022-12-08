@@ -9,7 +9,6 @@ sys.path.append(os.path.join(os.getcwd(), "software/comms"))
 import listener
 
 def main():
-	flag = 0
 	# debug=0
 	# if debug==1:
 	# 	[test1, test2] = mf.import_test
@@ -18,7 +17,7 @@ def main():
 	
 	# velocity_publisher, vel_msg = mf.init()
 	# [dc, fov_h, res_h, res_v] = lt.init()
-	listener.init(flag)
+	listener.init()
 	print("START")
 	while(1):
 
