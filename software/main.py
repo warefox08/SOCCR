@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 from lzma import MF_BT3
 import sys, os
+import rospy
 sys.path.append(os.path.join(os.getcwd(), "motion")) #add function folder to path
 # sys.path.append(os.path.join(os.getcwd(), "laser_tracking")) #add function folder to path
 sys.path.append(os.path.join(os.getcwd(), "comms"))
@@ -12,6 +13,7 @@ import motion_functions as mf
 import listener_class
 
 def main():
+	rospy.init_node('python_node')
 	# debug=0
 	# if debug==1:
 	# 	[test1, test2] = mf.import_test

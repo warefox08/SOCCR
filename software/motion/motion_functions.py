@@ -17,7 +17,7 @@ def stop(vel_msg, velocity_publisher):
 	velocity_publisher.publish(vel_msg)
 
 def init():
-	rospy.init_node('motion_commands', anonymous=True)
+	# rospy.init_node('motion_commands', anonymous=True)
 	velocity_publisher = rospy.Publisher('/cmd_vel', Twist, queue_size=10) #"turtle1"???
 	vel_msg = Twist()
 	stop(vel_msg, velocity_publisher)
