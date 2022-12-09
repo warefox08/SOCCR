@@ -29,7 +29,7 @@ def main():
 		if listener.flag == 1:
 			print("flag raised")
 			# angle_deg, distance = lt.find_vector_to_laser(dc, fov_h, res_h, res_v)
-			angle_deg = 10
+			angle_deg = 90
 			distance = 0.5
 			mf.send_motion_command(vel_msg, velocity_publisher, angle_deg, distance)
 			listener.lower_flag()
