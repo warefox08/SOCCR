@@ -13,7 +13,7 @@ class listener:
       print("Message Received")
 
    def init(self):
-      rospy.init_node("Team10")
+      # rospy.init_node("Team10")
       port_name = rospy.get_param('~tcp_port','tcp')
       baud = int(rospy.get_param('~baud','57600'))
       rospy.Subscriber("Team10", String, self.callback)
