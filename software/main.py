@@ -16,7 +16,7 @@ def main():
 	# 	print(test1)
 	# 	print(test2)
 	
-	# velocity_publisher, vel_msg = mf.init()
+	#velocity_publisher, vel_msg = mf.init()
 	# [dc, fov_h, res_h, res_v] = lt.init()
 	listener = listener_class.listener()
 	listener.init()
@@ -25,11 +25,10 @@ def main():
 		if listener.flag == 1:
 			print("flag raised")
 			listener.lower_flag()
-		#command_received_from_microcontroller = client.on_message
-		if ():
-			print("ENTERED")
 			# angle_deg, distance = lt.find_vector_to_laser(dc, fov_h, res_h, res_v)
-			# mf.send_motion_command(vel_msg, velocity_publisher, angle_deg, distance)
+			#angle_deg = 10
+			#distance = 0.5
+			#mf.send_motion_command(vel_msg, velocity_publisher, angle_deg, distance)
 			
 
 if __name__ == "__main__":
