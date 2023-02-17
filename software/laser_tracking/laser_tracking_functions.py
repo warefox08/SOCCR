@@ -71,7 +71,8 @@ def find_laser_cords(points, fov_h, res_h, depth_frame, color_frame, red_filter)
     angle_d = 180*angle/np.pi
 
     # Math for the generalised version -- NOTE: THIS IS UNTESTED 
-
+    #### care for diag shouldnt this be (l/sin b) or (l/cos theta) since its all in the same plane elevation 
+    #### shouldnt be taken into consideration
     l = distance_origin
     a = angle_rad 
     b = (np.pi/2)-a # angle beta = 90 - alpha (fov_h angle) i.e pi/2 - alpha (in rad) 
@@ -105,8 +106,8 @@ def show_data(red_filter, color_frame, p1, p2, distance_x, distance_origin, angl
 
     cv2.imshow("Color frame", color_frame)
 
-def log_data(p1, p2, distance_x, angle_deg_h):
-    write_string = "x: " + str(p1) + " y: " + str(p2) + " d: " + str(distance_x) + " a: "+ str(angle_deg_h) + "\n" #String to be written to txt file
+def log_data(angle_deg_h, distance_x):
+    write_string = " d: " + str(distance_x) + " a: "+ str(angle_deg_h) + "\n" #String to be written to txt file
     with open('data.txt', 'w') as f:
         f.write(write_string)
 
@@ -122,6 +123,10 @@ def find_vector_to_laser(dc, fov_h, res_h, res_v):
 
 if __name__ == "__main__":
     [dc, fov_h, res_h, res_v] = init()
-    while(1):
-        angle, distance = find_vector_to_laser(dc, fov_h, res_h, res_v)
-        print("a: " + str(angle) + " d: " + str(distance))
+    try:
+        while True:
+            angle, distance = find_vector_to_laser(dc, fov_h, res_h, res_v)
+            print("a: " + str(angle) + " d: " + str(distance))
+    except KeyboardInterrupt:
+        log_data(angle, distance)
+        print("data logged") 
