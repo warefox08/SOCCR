@@ -1,24 +1,21 @@
 #!/usr/bin/env python
 import cv2
-import numpy as np
+import pyrealsense2
+from realsense_depth import * #dependency --> realsense_depth.py, no other files/ scripts necessary 
 
 def init():
-    # Initialize Camera 
+    # Initialize Camera Intel Realsense
+    dc = DepthCamera()
     fov_h = 87
     res_h = 640
     res_v = 480
     # deg_per_pixel_h = fov_h/res_h
     # origin = [res_h/2, res_v/2]
-    return fov_h, res_h, res_v
+    return dc, fov_h, res_h, res_v
 
-def search_for_laser(fov_h, res_h):
+def search_for_laser(dc, fov_h, res_h):
+    _, depth_frame, color_frame = dc.get_frame() #returns the depth frame and color frame fed from the camera 
     
-    with open("rosbag.txt") as f:
-        data = f.read()
-    
-    depth_frame = data_depth...
-    color_frame = data_color...
-
     # Convert the BGR (opencv does BGR instead of RGB) color frame to a HSV frame 
     hsv_frame = cv2.cvtColor(color_frame, cv2.COLOR_BGR2HSV)
 
@@ -113,10 +110,10 @@ def log_data(p1, p2, distance_x, angle_deg_h):
     with open('data.txt', 'w') as f:
         f.write(write_string)
 
-def find_vector_to_laser(fov_h, res_h, res_v):
+def find_vector_to_laser(dc, fov_h, res_h, res_v):
     laser_found = 0
     while(not laser_found):
-        [laser_found, angle, distance] = search_for_laser(fov_h, res_h)
+        [laser_found, angle, distance] = search_for_laser(dc, fov_h, res_h)
         key = cv2.waitKey(1)
         if key == 27: # esc key to break 
             break
@@ -124,7 +121,7 @@ def find_vector_to_laser(fov_h, res_h, res_v):
 
 
 if __name__ == "__main__":
-    [fov_h, res_h, res_v] = init()
+    [dc, fov_h, res_h, res_v] = init()
     while(1):
-        angle, distance = find_vector_to_laser(fov_h, res_h, res_v)
+        angle, distance = find_vector_to_laser(dc, fov_h, res_h, res_v)
         print("a: " + str(angle) + " d: " + str(distance))
