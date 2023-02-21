@@ -125,13 +125,7 @@ def find_vector_to_laser(fov_h, res_h, res_v):
 
 
 if __name__ == "__main__":
-<<<<<<< HEAD
     [fov_h, res_h, res_v] = init()
-    while(1):
-        angle, distance = find_vector_to_laser(fov_h, res_h, res_v)
-        print("a: " + str(angle) + " d: " + str(distance))
-=======
-    [dc, fov_h, res_h, res_v] = init()
     try:
         while True:
             angle, distance = find_vector_to_laser(dc, fov_h, res_h, res_v)
@@ -139,4 +133,3 @@ if __name__ == "__main__":
     except KeyboardInterrupt:
         log_data(angle, distance)
         print("data logged") 
->>>>>>> 0b9209ebc29e54c9fc8b5e155952043372489f91
