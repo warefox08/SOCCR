@@ -5,8 +5,8 @@ import numpy as np
 def init():
     # Initialize Camera 
     fov_h = 87
-    res_h = 640
-    res_v = 480
+    res_v = 480 #720
+    res_h = 640 #1280
     # deg_per_pixel_h = fov_h/res_h
     # origin = [res_h/2, res_v/2]
     return fov_h, res_h, res_v
