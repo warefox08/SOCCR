@@ -15,7 +15,23 @@ def init():
 
 def search_for_laser(dc, fov_h, res_h):
     _, depth_frame, color_frame = dc.get_frame() #returns the depth frame and color frame fed from the camera 
+    print("depth frame:")
+    print(depth_frame)
+    print("color frame:")
+    print(color_frame)
+    print("depth frame size:")
+    print(np.size(depth_frame))
+    print("color frame size:")
+    print(np.size(color_frame))
+    print("color frame shape:")
+    print(color_frame.shape)
+    print("dtype:")
+    print(color_frame.dtype)
     
+    print("depth frame shape:")
+    print(depth_frame.shape)
+    print("dtype depth:")
+    print(depth_frame.dtype)
     # Convert the BGR (opencv does BGR instead of RGB) color frame to a HSV frame 
     hsv_frame = cv2.cvtColor(color_frame, cv2.COLOR_BGR2HSV)
 
@@ -67,7 +83,7 @@ def find_laser_cords(points, fov_h, res_h, depth_frame, color_frame, red_filter)
     angle_rad = np.pi*angle_deg_h/180
     distance_x = distance_origin/np.cos(angle_rad)
     
-    angle = np.arccos(distance_origin / distance_x) # is this not just returning angle_rad again?
+    angle = np.arccos(distance_origin/distance_x) # is this not just returning angle_rad again?
     angle_d = 180*angle/np.pi
 
     # Math for the generalised version -- NOTE: THIS IS UNTESTED 
@@ -114,7 +130,7 @@ def find_vector_to_laser(dc, fov_h, res_h, res_v):
     laser_found = 0
     while(not laser_found):
         [laser_found, angle, distance] = search_for_laser(dc, fov_h, res_h)
-        key = cv2.waitKey(1)
+        key = cv2.waitKey(0)
         if key == 27: # esc key to break 
             break
     return angle, distance
@@ -125,3 +141,4 @@ if __name__ == "__main__":
     while(1):
         angle, distance = find_vector_to_laser(dc, fov_h, res_h, res_v)
         print("a: " + str(angle) + " d: " + str(distance))
+        
