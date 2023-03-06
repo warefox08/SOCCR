@@ -21,7 +21,7 @@ def search_for_laser(fov_h, res_h):
 
     bridge = CvBridge()
 
-    for topic, msg, t in rosbag.Bag('../rosbags/test_3_4.bag').read_messages():
+    for topic, msg, t in rosbag.Bag('../rosbags/random_2.bag').read_messages():
         # print(topic)
         if topic == "/camera1/aligned_depth_to_color/image_raw":
             depth_msg = msg

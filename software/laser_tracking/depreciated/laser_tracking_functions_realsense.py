@@ -33,7 +33,8 @@ def search_for_laser(dc, fov_h, res_h):
     print("dtype depth:")
     print(depth_frame.dtype)
     # Convert the BGR (opencv does BGR instead of RGB) color frame to a HSV frame 
-    hsv_frame = cv2.cvtColor(color_frame, cv2.COLOR_BGR2HSV)
+    hsv_frame = cv2.cvtColor(np.float32(color_frame), cv2.COLOR_BGR2HSV_FULL)
+    cv2.imshow('hsv_frame', hsv_frame)
 
     # Define range of red color in HSV -> red hue boundary -- worth testing out and messing around with 
     lower_red = np.array([30, 150, 50])
@@ -100,26 +101,27 @@ def find_laser_cords(points, fov_h, res_h, depth_frame, color_frame, red_filter)
     return angle_deg_h, distance_x
 
 def show_data(red_filter, color_frame, p1, p2, distance_x, distance_origin, angle_deg_h):
-    cv2.imshow('red_filter', red_filter)
-    cv2.circle(color_frame, (p1,p2), 10, (255, 0, 0)) # creates a blue circle of diameter '10' around the average laser coordinate
+    # cv2.imshow('red_filter', red_filter)
+    # cv2.circle(color_frame, (p1,p2), 10, (255, 0, 0)) # creates a blue circle of diameter '10' around the average laser coordinate
 
-    cv2.putText(color_frame, "x: {}".format(p1-320), (50, 400), cv2.FONT_HERSHEY_PLAIN, 2, (255, 255, 255), 2)
+    # cv2.putText(color_frame, "x: {}".format(p1-320), (50, 400), cv2.FONT_HERSHEY_PLAIN, 2, (255, 255, 255), 2)
     
-    cv2.putText(color_frame, "y: {}".format(-p2+240), (50, 450), cv2.FONT_HERSHEY_PLAIN, 2, (255, 255, 255), 2)
+    # cv2.putText(color_frame, "y: {}".format(-p2+240), (50, 450), cv2.FONT_HERSHEY_PLAIN, 2, (255, 255, 255), 2)
 
-    cv2.putText(color_frame, "d_x: {}".format(distance_x), (50, 100), cv2.FONT_HERSHEY_PLAIN, 2, (255, 255, 255), 2)
+    # cv2.putText(color_frame, "d_x: {}".format(distance_x), (50, 100), cv2.FONT_HERSHEY_PLAIN, 2, (255, 255, 255), 2)
     
-    cv2.putText(color_frame, "d_o: {}mm".format(distance_origin), (320, 240), cv2.FONT_HERSHEY_PLAIN, 2, (255, 255, 255), 2)
+    # cv2.putText(color_frame, "d_o: {}mm".format(distance_origin), (320, 240), cv2.FONT_HERSHEY_PLAIN, 2, (255, 255, 255), 2)
 
-    cv2.putText(color_frame, "ang: {}".format(angle_deg_h), (320, 350), cv2.FONT_HERSHEY_PLAIN, 2, (255, 255, 255), 2)
+    # cv2.putText(color_frame, "ang: {}".format(angle_deg_h), (320, 350), cv2.FONT_HERSHEY_PLAIN, 2, (255, 255, 255), 2)
 
-    cv2.putText(color_frame, "y: {}".format(-p2+240), (100, 150), cv2.FONT_HERSHEY_PLAIN, 2, (255, 255, 255), 2)
+    # cv2.putText(color_frame, "y: {}".format(-p2+240), (100, 150), cv2.FONT_HERSHEY_PLAIN, 2, (255, 255, 255), 2)
 
-    cv2.putText(color_frame, "dx: {}mm".format(distance_x), (200, 200), cv2.FONT_HERSHEY_PLAIN, 2, (255, 255, 255), 2)
+    # cv2.putText(color_frame, "dx: {}mm".format(distance_x), (200, 200), cv2.FONT_HERSHEY_PLAIN, 2, (255, 255, 255), 2)
 
-    #Display the color frame
+    # #Display the color frame
 
-    cv2.imshow("Color frame", color_frame)
+    pass
+    # cv2.imshow("Color frame", color_frame)
 
 def log_data(p1, p2, distance_x, angle_deg_h):
     write_string = "x: " + str(p1) + " y: " + str(p2) + " d: " + str(distance_x) + " a: "+ str(angle_deg_h) + "\n" #String to be written to txt file
