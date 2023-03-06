@@ -21,7 +21,7 @@ def search_for_laser(fov_h, res_h):
 
     bridge = CvBridge()
 
-    for topic, msg, t in rosbag.Bag('../rosbags/test_3_3.bag').read_messages():
+    for topic, msg, t in rosbag.Bag('../rosbags/test_3_4.bag').read_messages():
         # print(topic)
         if topic == "/camera1/aligned_depth_to_color/image_raw":
             depth_msg = msg
@@ -36,6 +36,8 @@ def search_for_laser(fov_h, res_h):
     color_image = bridge.imgmsg_to_cv2(color_msg, desired_encoding="passthrough")
     # color_frame = np.array(depth_image, dtype=np.float32)
 
+    color_image = cv2.cvtColor(color_image, cv2.COLOR_RGB2BGR)
+
     color_frame = np.float32(color_image)
 
     # Convert the BGR (opencv does BGR instead of RGB) color frame to a HSV frame 
@@ -45,11 +47,12 @@ def search_for_laser(fov_h, res_h):
     lower_red = np.array([30, 150, 50])
     upper_red = np.array([255, 255, 180])
 
-    cv2.imshow('color_image', color_image)
+    # cv2.imshow('color_image', color_image)
+    cv2.imshow('hsv_frame', hsv_frame)
 
     # Create a mask using the HSV range
     mask_colour = cv2.inRange(hsv_frame, lower_red, upper_red)
-    #cv2.imshow('mask_colour', mask_colour)
+    cv2.imshow('mask_colour', mask_colour)
 
     # Threshold the HSV image to filter out all 'non-red' pixels
     red_filter = cv2.bitwise_and(color_frame, color_frame, mask = mask_colour)
@@ -65,8 +68,10 @@ def search_for_laser(fov_h, res_h):
 
     if (points is not None):
         [angle, distance] = find_laser_cords(points, fov_h, res_h, depth_frame, color_frame, red_filter)
+        print("laser found")
         return 1, angle, distance
     else:
+        # print("laser not found")
         return 0, None, None
     #### Moved to find_vector_to_laser()
     # key = cv2.waitKey(1)
