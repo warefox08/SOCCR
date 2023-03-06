@@ -1,40 +1,49 @@
 import rosbag
 import rospy
 import numpy as np
+import cv2
+from cv_bridge import CvBridge, CvBridgeError
+from PIL import Image
 
-# c_info_topic = None
+
+depth_msg = None
+
+topics=[]
 
 n=1
-# with rosbag.Bag("test_3.bag") as bag:
-for topic, msg, t in rosbag.Bag('test_3.bag').read_messages():
-  if n==1:
-    c_info_topic = topic
-    c_info_msg = msg
-    c_info_t = t
-  if n==2:
-    d_info_topic = topic
-    d_info_msg = msg
-    d_info_t = t
-  if n==3:
-    c_raw_topic = topic
-    c_raw_msg = msg
-    c_raw_t = t
-  if n==4:
-    d_raw_topic = topic
-    d_raw_msg = msg
-    d_raw_t = t
+
+for topic, msg, t in rosbag.Bag('test_3_5.bag').read_messages():
+
+  if topic not in topics:
+    topics.append(topic)
+  # print(topic)
+
+  if topic == "/camera1/color/image_raw":
+    depth_msg = msg
+    # print(msg)
   n=n+1
 
-# print(c_info_topic)
-# print(c_info_msg)
-# print(d_info_topic)
-# print(d_info_msg)
+for topic in topics:
+  print(topic)
 
-print(len(d_raw_msg.data))
-print(d_raw_msg.height)
-print(d_raw_msg.width)
+bridge = CvBridge()
+depth_image = bridge.imgmsg_to_cv2(depth_msg, desired_encoding="passthrough")
+depth_array = np.array(depth_image, dtype=np.uint8)
+print(depth_array)
+print(np.size(depth_array))
+print(depth_array.ndim)
+print(depth_array.shape)
+print(depth_array.dtype)
 
 
+# print(depth_msg)
+# print(depth_msg)
+# depth_test = np.uint16(np.float32(depth_msg))
+# print(depth_test)
+# summed_depth = depth_msg[::2]+[i*256 for i in depth_msg[1::2]]
+# print(summed_depth)
+
+# 16UC1
 
 
 ####
