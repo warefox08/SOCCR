@@ -21,7 +21,7 @@ def search_for_laser(fov_h, res_h):
 
     bridge = CvBridge()
 
-    for topic, msg, t in rosbag.Bag('../rosbags/test_3_5.bag').read_messages():
+    for topic, msg, t in rosbag.Bag('../rosbags/test_3_3.bag').read_messages():
         # print(topic)
         if topic == "/camera1/aligned_depth_to_color/image_raw":
             depth_msg = msg
@@ -44,6 +44,8 @@ def search_for_laser(fov_h, res_h):
     # Define range of red color in HSV -> red hue boundary -- worth testing out and messing around with 
     lower_red = np.array([30, 150, 50])
     upper_red = np.array([255, 255, 180])
+
+    cv2.imshow('color_image', color_image)
 
     # Create a mask using the HSV range
     mask_colour = cv2.inRange(hsv_frame, lower_red, upper_red)
