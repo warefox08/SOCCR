@@ -28,10 +28,15 @@ def search_for_laser(fov_h, res_h):
         if topic == "/camera1/color/image_raw":
             color_msg = msg
     
-    depth_image = bridge.imgmsg_to_cv2(depth_msg, desired_encoding="passthrough")
-    depth_frame = np.array(depth_image, dtype=np.uint8)
+    depth_frame = depth_msg
+    color_frame = color_msg
+
+    # depth_image = bridge.imgmsg_to_cv2(depth_msg, desired_encoding="passthrough")
+    # depth_frame = np.array(depth_image, dtype=np.float32)
     color_image = bridge.imgmsg_to_cv2(color_msg, desired_encoding="passthrough")
-    color_frame = np.array(depth_image, dtype=np.uint8)
+    # color_frame = np.array(depth_image, dtype=np.float32)
+
+    color_frame = np.float32(color_image)
 
     # Convert the BGR (opencv does BGR instead of RGB) color frame to a HSV frame 
     hsv_frame = cv2.cvtColor(color_frame, cv2.COLOR_BGR2HSV)
