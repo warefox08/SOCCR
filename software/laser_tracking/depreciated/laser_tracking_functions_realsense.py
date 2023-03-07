@@ -2,6 +2,7 @@
 import cv2
 import pyrealsense2
 from realsense_depth import * #dependency --> realsense_depth.py, no other files/ scripts necessary 
+import time
 
 def init():
     # Initialize Camera Intel Realsense
@@ -27,14 +28,36 @@ def search_for_laser(dc, fov_h, res_h):
     print(color_frame.shape)
     print("dtype:")
     print(color_frame.dtype)
+    # cv2.imshow('color frame', color_frame)
     
     print("depth frame shape:")
     print(depth_frame.shape)
     print("dtype depth:")
     print(depth_frame.dtype)
     # Convert the BGR (opencv does BGR instead of RGB) color frame to a HSV frame 
-    hsv_frame = cv2.cvtColor(np.float32(color_frame), cv2.COLOR_BGR2HSV_FULL)
+    hsv_frame = cv2.cvtColor(np.float32(color_frame), cv2.COLOR_BGR2HSV)
+    print("dtype hsv:")
+    print(hsv_frame.dtype)
+
+    print("hsv frame:")
+    print(hsv_frame)
     cv2.imshow('hsv_frame', hsv_frame)
+
+    hsv_frame_mul = np.multiply(hsv_frame,1.4)
+    print("hsv frame multiplied:")
+    print(hsv_frame_mul)
+    cv2.imshow('hsv_frame_div', hsv_frame_mul)
+    print("dtype hsv frame multiplied:")
+    print(hsv_frame_mul.dtype)
+
+    hsv_frame_reverted = np.uint8(hsv_frame)
+    
+    print("dtype hsv reverted frame:")
+    print(hsv_frame_reverted.dtype)
+
+    print("hsv frame reverted:")
+    print(hsv_frame_reverted)
+    cv2.imshow('hsv_frame_reverted', hsv_frame_reverted)
 
     # Define range of red color in HSV -> red hue boundary -- worth testing out and messing around with 
     lower_red = np.array([30, 150, 50])
@@ -137,10 +160,22 @@ def find_vector_to_laser(dc, fov_h, res_h, res_v):
             break
     return angle, distance
 
+t_end = time.time() + 10
 
 if __name__ == "__main__":
     [dc, fov_h, res_h, res_v] = init()
-    while(1):
+    while True:
         angle, distance = find_vector_to_laser(dc, fov_h, res_h, res_v)
         print("a: " + str(angle) + " d: " + str(distance))
-        
+        if time.time() > t_end:
+            break
+
+
+    #try:
+    #    while True:
+    #        angle, distance = find_vector_to_laser(dc, fov_h, res_h, res_v)
+    #        print("a: " + str(angle) + " d: " + str(distance))
+    # except KeyboardInterrupt:
+        # log_data(angle, distance)
+    #    print("data logged") 
+    
