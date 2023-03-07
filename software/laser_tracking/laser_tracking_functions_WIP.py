@@ -41,13 +41,13 @@ def search_for_laser(fov_h, res_h):
     color_frame = np.float32(color_image)
 
     # Convert the BGR (opencv does BGR instead of RGB) color frame to a HSV frame 
-    hsv_frame = cv2.cvtColor(color_frame, cv2.COLOR_BGR2HSV)
+    hsv_frame = cv2.cvtColor(color_image, cv2.COLOR_BGR2HSV)
 
     # Define range of red color in HSV -> red hue boundary -- worth testing out and messing around with 
     lower_red = np.array([30, 150, 50])
     upper_red = np.array([255, 255, 180])
 
-    print(color_frame)
+    # print(color_frame)
 
     cv2.imshow('color_image', color_image)
     cv2.imshow('hsv_frame', hsv_frame)
