@@ -21,7 +21,7 @@ def search_for_laser(fov_h, res_h):
 
     bridge = CvBridge()
 
-    for topic, msg, t in rosbag.Bag('../rosbags/random_1.bag').read_messages():
+    for topic, msg, t in rosbag.Bag('../rosbags/test_3_3.bag').read_messages():
         # print(topic)
         if topic == "/camera1/aligned_depth_to_color/image_raw":
             depth_msg = msg
@@ -31,7 +31,7 @@ def search_for_laser(fov_h, res_h):
     depth_frame = depth_msg
     color_frame = color_msg
 
-    # depth_image = bridge.imgmsg_to_cv2(depth_msg, desired_encoding="passthrough")
+    depth_frame = bridge.imgmsg_to_cv2(depth_msg, desired_encoding="passthrough")
     # depth_frame = np.array(depth_image, dtype=np.float32)
     color_image = bridge.imgmsg_to_cv2(color_msg, desired_encoding="passthrough")
     # color_frame = np.array(depth_image, dtype=np.float32)
@@ -66,6 +66,7 @@ def search_for_laser(fov_h, res_h):
 
     img = cv2.cvtColor(red_filter,cv2.COLOR_BGR2GRAY)
     img = img.astype(np.uint8) #converts the image to int type - each pixel has an int value of 0-255 rathe than floating points between 0 and 
+    cv2.imshow ('img', img)
     points = cv2.findNonZero(img) #finds coordinates of non-zero pixels 
 
     if (points is not None):
@@ -119,19 +120,19 @@ def show_data(red_filter, color_frame, p1, p2, distance_x, distance_origin, angl
     cv2.imshow('red_filter', red_filter)
     cv2.circle(color_frame, (p1,p2), 10, (255, 0, 0)) # creates a blue circle of diameter '10' around the average laser coordinate
 
-    cv2.putText(color_frame, "x: {}".format(p1-320), (50, 400), cv2.FONT_HERSHEY_PLAIN, 2, (255, 255, 255), 2)
+    # cv2.putText(color_frame, "x: {}".format(p1-320), (50, 400), cv2.FONT_HERSHEY_PLAIN, 2, (255, 255, 255), 2)
     
-    cv2.putText(color_frame, "y: {}".format(-p2+240), (50, 450), cv2.FONT_HERSHEY_PLAIN, 2, (255, 255, 255), 2)
+    # cv2.putText(color_frame, "y: {}".format(-p2+240), (50, 450), cv2.FONT_HERSHEY_PLAIN, 2, (255, 255, 255), 2)
 
-    cv2.putText(color_frame, "d_x: {}".format(distance_x), (50, 100), cv2.FONT_HERSHEY_PLAIN, 2, (255, 255, 255), 2)
+    # cv2.putText(color_frame, "d_x: {}".format(distance_x), (50, 100), cv2.FONT_HERSHEY_PLAIN, 2, (255, 255, 255), 2)
     
-    cv2.putText(color_frame, "d_o: {}mm".format(distance_origin), (320, 240), cv2.FONT_HERSHEY_PLAIN, 2, (255, 255, 255), 2)
+    # cv2.putText(color_frame, "d_o: {}mm".format(distance_origin), (320, 240), cv2.FONT_HERSHEY_PLAIN, 2, (255, 255, 255), 2)
 
-    cv2.putText(color_frame, "ang: {}".format(angle_deg_h), (320, 350), cv2.FONT_HERSHEY_PLAIN, 2, (255, 255, 255), 2)
+    # cv2.putText(color_frame, "ang: {}".format(angle_deg_h), (320, 350), cv2.FONT_HERSHEY_PLAIN, 2, (255, 255, 255), 2)
 
-    cv2.putText(color_frame, "y: {}".format(-p2+240), (100, 150), cv2.FONT_HERSHEY_PLAIN, 2, (255, 255, 255), 2)
+    # cv2.putText(color_frame, "y: {}".format(-p2+240), (100, 150), cv2.FONT_HERSHEY_PLAIN, 2, (255, 255, 255), 2)
 
-    cv2.putText(color_frame, "dx: {}mm".format(distance_x), (200, 200), cv2.FONT_HERSHEY_PLAIN, 2, (255, 255, 255), 2)
+    # cv2.putText(color_frame, "dx: {}mm".format(distance_x), (200, 200), cv2.FONT_HERSHEY_PLAIN, 2, (255, 255, 255), 2)
 
     #Display the color frame
 
