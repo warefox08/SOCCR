@@ -13,13 +13,14 @@ class listener:
    def callback(self, arg):
       self.raise_flag()
       print("Message Received")
-      self.read_data()
+      #self.read_data()
 
    def init(self):
       # rospy.init_node("Team10")
       port_name = rospy.get_param('~tcp_port','tcp')
       baud = int(rospy.get_param('~baud','57600'))
       rospy.Subscriber("Team10", String, self.callback)
+      #rostopic pub Team10 software/comms
 
    def raise_flag(self):
      self.flag = 1
