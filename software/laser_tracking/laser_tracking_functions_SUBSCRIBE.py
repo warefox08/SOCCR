@@ -66,9 +66,9 @@ def search_for_laser(fov_h, res_h):
     points = cv2.findNonZero(img) #finds coordinates of non-zero pixels 
 
     if (points is not None):
-        [angle, distance] = find_laser_cords(points, fov_h, res_h, depth_frame, color_frame, red_filter)
+        [angle, distance, distance_x] = find_laser_cords(points, fov_h, res_h, depth_frame, color_frame, red_filter)
         print("laser found")
-        return 1, angle, distance
+        return 1, angle, distance, distance_x
     else:
         # print("laser not found")
         return 0, None, None
@@ -110,7 +110,7 @@ def find_laser_cords(points, fov_h, res_h, depth_frame, color_frame, red_filter)
     show_data(red_filter, color_frame, p1, p2, distance_x, distance_origin, angle_deg_h)
     # log_data(p1, p2, distance_x, angle_deg_h)
 
-    return angle_deg_h, distance_x
+    return angle_deg_h, distance, distance_x
 
 def show_data(red_filter, color_frame, p1, p2, distance_x, distance_origin, angle_deg_h):
     cv2.imshow('red_filter', red_filter)

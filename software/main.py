@@ -5,12 +5,13 @@ import rospy
 sys.path.append(os.path.join(os.getcwd(), "motion")) #add function folder to path
 sys.path.append(os.path.join(os.getcwd(), "laser_tracking")) #add function folder to path
 sys.path.append(os.path.join(os.getcwd(), "comms"))
+sys.path.append(os.path.join(os.getcwd(), "laser_tracking/auto_nav/scripts"))
 
 print(sys.path)
 import motion_functions as mf
-import laser_tracking_functions as lt
-
+import laser_tracking_functions_SUBSCRIBE as lt
 import listener_class
+import goal_pose_copy as gs
 
 def main():
 	rospy.init_node('python_node')
@@ -24,6 +25,9 @@ def main():
 	[fov_h, res_h, res_v] = lt.init()
 	listener = listener_class.listener()
 	listener.init()
+
+	[navclient, goal] = gs.init()
+
 	print("START")
 	while(1):
 		if listener.flag == 1:
@@ -32,8 +36,10 @@ def main():
 			# distance = 0.5
 			#angle_deg = listener.angle
 			#distance = listener.distance/1000
-			angle_deg, distance = lt.find_vector_to_laser(fov_h, res_h, res_v)
-			mf.send_motion_command(vel_msg, velocity_publisher, angle_deg, distance)
+			angle_deg, depth, distance_y = lt.find_vector_to_laser(fov_h, res_h, res_v)
+			gs.send_command(navclient, goal, depth, distance_y)
+
+			#mf.send_motion_command(vel_msg, velocity_publisher, angle_deg, distance)
 			listener.lower_flag()
 			print("flag_lowered")
 
