@@ -22,14 +22,20 @@ class laser_tracker:
     def image_callback(self, img_msg, args):
         rospy.loginfo(img_msg.header)
         try:
+            print ("gets into callback")
             args[0] = self.bridge.imgmsg_to_cv2(img_msg, desired_encoding="passthrough")
+            print (args[0])
         except CvBridgeError:
             rospy.logerr("CvBridge Error")
             
 
     def search_for_laser(self):
-
+        print (self.color_msg)
+        print ("here")
+        print (self.color_msg.dtype)
+        print ("here 2")
         color_image = cv2.cvtColor(self.color_msg, cv2.COLOR_RGB2BGR)
+        print (color_image.dtype)
 
         color_frame = np.float32(color_image)
 
@@ -113,6 +119,7 @@ class laser_tracker:
 
 
 if __name__ == "__main__":
+    rospy.init_node('test')
     tracker = laser_tracker()
     while True:
         angle, distance, distance_x = tracker.find_vector_to_laser()
