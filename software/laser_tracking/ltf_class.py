@@ -15,21 +15,38 @@ class laser_tracker:
         self.bridge = CvBridge()
         self.depth_msg = None
         self.color_msg = None
-        self.depth_sub = rospy.Subscriber("/camera1/aligned_depth_to_color/image_raw", Image, self.image_callback, self.depth_msg)
-        self.color_sub = rospy.Subscriber("/camera1/color/image_raw", Image, self.image_callback, self.color_msg)
+        self.depth_sub = rospy.Subscriber("/camera1/aligned_depth_to_color/image_raw", Image, self.image_callback)
+        self.color_sub = rospy.Subscriber("/camera1/color/image_raw", Image, self.image_callback)
         rospy.spin()
         
 
-    def image_callback(self, img_msg, frame):
+    # def image_callback(self, img_msg, frame):
+    #     rospy.loginfo(img_msg.header)
+    #     try:
+    #         print ("gets into callback")
+    #         frame = self.bridge.imgmsg_to_cv2(img_msg, desired_encoding="passthrough")
+    #         print (frame)
+    #     except CvBridgeError:
+            # rospy.logerr("CvBridge Error")
+    
+    def color_callback(self, img_msg):
         rospy.loginfo(img_msg.header)
         try:
-            print ("gets into callback")
-            frame = self.bridge.imgmsg_to_cv2(img_msg, desired_encoding="passthrough")
-            print (frame)
+            print ("gets into color callback")
+            self.color_msg = self.bridge.imgmsg_to_cv2(img_msg, desired_encoding="passthrough")
+            print (self.color_msg)
+        except CvBridgeError:
+            rospy.logerr("CvBridge Error")
+
+    def depth_callback(self, img_msg):
+        rospy.loginfo(img_msg.header)
+        try:
+            print ("gets into depth callback")
+            self.depth_msg = self.bridge.imgmsg_to_cv2(img_msg, desired_encoding="passthrough")
+            print (self.depth_msg)
         except CvBridgeError:
             rospy.logerr("CvBridge Error")
             
-
     def search_for_laser(self):
         print (self.color_msg)
         print ("here")
