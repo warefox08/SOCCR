@@ -29,10 +29,12 @@ def color_callback(img_color):
     bridge = CvBridge()
     try:
         color_image = bridge.imgmsg_to_cv2(img_color, desired_encoding="passthrough")
+        #print(color_image)
         color_image_BGR = cv2.cvtColor(color_image, cv2.COLOR_RGB2BGR)
+        print (color_image_BGR)
         color_frame = np.float32(color_image)
         # Convert the BGR (opencv does BGR instead of RGB) color frame to a HSV frame 
-        hsv_frame = cv2.cvtColor(color_image, cv2.COLOR_BGR2HSV)
+        hsv_frame = cv2.cvtColor(color_image_BGR, cv2.COLOR_BGR2HSV)
         # Define range of red color in HSV -> red hue boundary -- worth testing out and messing around with 
         lower_red = np.array([30, 150, 50])
         upper_red = np.array([255, 255, 180])
@@ -63,7 +65,6 @@ def color_callback(img_color):
 
 def depth_callback(img_depth):
     print ("Enters depth callback")
-    rospy.loginfo(img_depth.header)
     rospy.loginfo(img_depth.header)
     bridge = CvBridge()
     try:

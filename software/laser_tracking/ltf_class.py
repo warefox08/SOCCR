@@ -12,7 +12,8 @@ class laser_tracker:
         self.fov_h = 87
         self.res_v = 480 #720
         self.res_h = 640 #1280
-        self.bridge = CvBridge()
+        self.color_bridge = CvBridge()
+        self.depth_bridge = CvBridge()
         self.depth_msg = None
         self.color_msg = None
         self.depth_sub = rospy.Subscriber("/camera1/aligned_depth_to_color/image_raw", Image, self.color_callback)
@@ -35,9 +36,14 @@ class laser_tracker:
         try:
             print ("gets into color callback")
             # print (img_msg) - BEWARE uncommenting this
-            self.color_msg = self.bridge.imgmsg_to_cv2(img_msg, desired_encoding="passthrough")
-            cv2.imshow('pre convert', self.color_msg)
+            # color = cv2.convertScaleAbs(img_msg, alpha=(255.0/65535.0))
+            self.color_msg = self.color_bridge.imgmsg_to_cv2(img_msg, desired_encoding="passthrough")
+            # self.color_msg = self.color_bridge.imgmsg_to_cv2(img_msg, "rgb8") # defining rgb8 or bgr8 throw CvBridge error 
+            # cv2.imshow('pre convert', self.color_msg)
+            # self.color_msg = cv2.convertScaleAbs(self.color_msg, alpha=(255.0/65535.0))
             print (self.color_msg)
+            print ("dtype")
+            print (self.color_msg.dtype)
         except CvBridgeError:
             rospy.logerr("CvBridge Error")
 
@@ -45,7 +51,7 @@ class laser_tracker:
         rospy.loginfo(img_msg.header)
         try:
             print ("gets into depth callback")
-            self.depth_msg = self.bridge.imgmsg_to_cv2(img_msg, desired_encoding="passthrough")
+            self.depth_msg = self.depth_bridge.imgmsg_to_cv2(img_msg, desired_encoding="passthrough")
             
             #  print (self.depth_msg)
         except CvBridgeError:
@@ -57,14 +63,16 @@ class laser_tracker:
         print ("here")
         # print (self.color_msg.dtype)
         # print ("here 2")
-        #cv2.imshow('pre convert', self.color_msg)
+        cv2.imshow('pre convert', self.color_msg)
+        # self.color_msg = cv2.convertScaleAbs(self.color_msg)
         color_image = cv2.cvtColor(self.color_msg, cv2.COLOR_RGB2BGR)
-        # print (color_image.dtype)
+        print(color_image)
 
         color_frame = np.float32(color_image)
-
+        col = cv2.convertScaleAbs(color_image, alpha=(255.0/65535.0))
+        print(col)
         # Convert the BGR (opencv does BGR instead of RGB) color frame to a HSV frame 
-        hsv_frame = cv2.cvtColor(color_image, cv2.COLOR_BGR2HSV)
+        hsv_frame = cv2.cvtColor(col, cv2.COLOR_BGR2HSV)
 
         # Define range of red color in HSV -> red hue boundary -- worth testing out and messing around with 
         lower_red = np.array([30, 150, 50])
@@ -145,7 +153,10 @@ class laser_tracker:
 if __name__ == "__main__":
     rospy.init_node('test')
     tracker = laser_tracker()
-    while True:
-        if tracker.depth_msg is not None and tracker.color_msg is not None:
-            angle, distance, distance_x = tracker.find_vector_to_laser()
-            print("a: " + str(angle) + " d: " + str(distance))
+    try:
+        while True:
+            if tracker.depth_msg is not None and tracker.color_msg is not None:
+                angle, distance, distance_x = tracker.find_vector_to_laser()
+                print("a: " + str(angle) + " d: " + str(distance))
+    except KeyboardInterrupt:
+        print("hell escaped") 

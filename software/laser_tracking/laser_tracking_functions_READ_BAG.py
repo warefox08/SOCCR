@@ -35,7 +35,10 @@ def search_for_laser(fov_h, res_h):
     # depth_frame = np.array(depth_image, dtype=np.float32)
     color_image = bridge.imgmsg_to_cv2(color_msg, desired_encoding="passthrough")
     # color_frame = np.array(depth_image, dtype=np.float32)
-
+    print ("debug")
+    print (color_image)
+    print ("dtype:")
+    print (color_image.dtype) 
     color_image = cv2.cvtColor(color_image, cv2.COLOR_RGB2BGR)
 
     color_frame = np.float32(color_image)
