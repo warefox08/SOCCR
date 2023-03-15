@@ -15,9 +15,10 @@ class laser_tracker:
         self.bridge = CvBridge()
         self.depth_msg = None
         self.color_msg = None
-        self.depth_sub = rospy.Subscriber("/camera1/aligned_depth_to_color/image_raw", Image, self.image_callback)
-        self.color_sub = rospy.Subscriber("/camera1/color/image_raw", Image, self.image_callback)
-        rospy.spin()
+        self.depth_sub = rospy.Subscriber("/camera1/aligned_depth_to_color/image_raw", Image, self.color_callback)
+        self.color_sub = rospy.Subscriber("/camera1/color/image_raw", Image, self.depth_callback)
+        #rospy.spin()
+        #rospy.sleep(5)
         
 
     # def image_callback(self, img_msg, frame):
@@ -33,7 +34,9 @@ class laser_tracker:
         rospy.loginfo(img_msg.header)
         try:
             print ("gets into color callback")
+            # print (img_msg) - BEWARE uncommenting this
             self.color_msg = self.bridge.imgmsg_to_cv2(img_msg, desired_encoding="passthrough")
+            cv2.imshow('pre convert', self.color_msg)
             print (self.color_msg)
         except CvBridgeError:
             rospy.logerr("CvBridge Error")
@@ -43,17 +46,20 @@ class laser_tracker:
         try:
             print ("gets into depth callback")
             self.depth_msg = self.bridge.imgmsg_to_cv2(img_msg, desired_encoding="passthrough")
-            print (self.depth_msg)
+            
+            #  print (self.depth_msg)
         except CvBridgeError:
             rospy.logerr("CvBridge Error")
             
     def search_for_laser(self):
+        print ("searches for laser using color frame:")
         print (self.color_msg)
         print ("here")
-        print (self.color_msg.dtype)
-        print ("here 2")
+        # print (self.color_msg.dtype)
+        # print ("here 2")
+        #cv2.imshow('pre convert', self.color_msg)
         color_image = cv2.cvtColor(self.color_msg, cv2.COLOR_RGB2BGR)
-        print (color_image.dtype)
+        # print (color_image.dtype)
 
         color_frame = np.float32(color_image)
 
@@ -140,5 +146,6 @@ if __name__ == "__main__":
     rospy.init_node('test')
     tracker = laser_tracker()
     while True:
-        angle, distance, distance_x = tracker.find_vector_to_laser()
-        print("a: " + str(angle) + " d: " + str(distance))
+        if tracker.depth_msg is not None and tracker.color_msg is not None:
+            angle, distance, distance_x = tracker.find_vector_to_laser()
+            print("a: " + str(angle) + " d: " + str(distance))
