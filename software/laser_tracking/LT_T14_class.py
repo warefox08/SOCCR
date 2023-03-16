@@ -107,8 +107,9 @@ class laser_tracker:
 if __name__ == "__main__":
     #[fov_h, res_h, res_v] = init()
     rospy.init_node('Laser_Detection_Node')
+    lt = laser_tracker()
     try:
-        init()
+        lt.init()
         print ("runs")
     except KeyboardInterrupt:
         # log_data(x_d, y_d, z_d)
