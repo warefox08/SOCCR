@@ -12,29 +12,32 @@ from std_msgs.msg import Int32
 class laser_tracker:
 
     def __init__(self):
-        # Initialize Camera 
         self.fov_h = 87
         self.res_v = 480 #720
         self.res_h = 640 #1280
-        # deg_per_pixel_h = fov_h/res_h
-        # origin = [res_h/2, res_v/2]
+ 
+    def init(self):
         self.depth_sub = rospy.Subscriber("/camera1/aligned_depth_to_color/image_raw", Image, self.depth_callback)
         self.color_sub = rospy.Subscriber("/camera1/color/image_raw", Image, self.color_callback)
-        #rospy.spin()
+        rospy.spin()
 
     def color_callback(self, img_color):
-        print ("Enters color callback")
-        rospy.loginfo(img_color.header)
-        rospy.loginfo("Receiving Frames")
+        #print ("Enters color callback")
+        #rospy.loginfo(img_color.header)
+        #rospy.loginfo("Receiving Frames")
         bridge = CvBridge()
         try:
             self.color_image = bridge.imgmsg_to_cv2(img_color, desired_encoding="passthrough")
-            #print(self.color_image)
+            ##print(self.color_image)
+            print(self.color_image.dtype)
             self.color_image_BGR = cv2.cvtColor(self.color_image, cv2.COLOR_RGB2BGR)
-            print (self.color_image_BGR)
+            ##print (self.color_image_BGR)
+            print (self.color_image_BGR.dtype)
+
             color_frame = np.float32(self.color_image)
             # Convert the BGR (opencv does BGR instead of RGB) color frame to a HSV frame 
             hsv_frame = cv2.cvtColor(self.color_image_BGR, cv2.COLOR_BGR2HSV)
+            print (hsv_frame.dtype)
             # Define range of red color in HSV -> red hue boundary -- worth testing out and messing around with 
             lower_red = np.array([30, 150, 50])
             upper_red = np.array([255, 255, 180])
@@ -54,23 +57,23 @@ class laser_tracker:
             p1 = int(avg[0][0])
             p2 = int(avg[0][1])
             pixel = ([p1, p2])
-            print ("x:" + str(p1) + "y:" + str(p2))
-            print ("gets to end of color callback")
+            #print ("x:" + str(p1) + "y:" + str(p2))
+            #print ("gets to end of color callback")
             #return self.color_image
             
         except CvBridgeError:
             rospy.logerr("CvBridge Error")
 
     def depth_callback(img_depth):
-        print ("Enters depth callback")
-        rospy.loginfo(img_depth.header)
+        #print ("Enters depth callback")
+        #rospy.loginfo(img_depth.header)
         bridge = CvBridge()
         try:
             depth_image = bridge.imgmsg_to_cv2(img_depth, desired_encoding="passthrough")
             # depth_frame = depth_image
             # depth_pixel = depth_frame[0, 0] #depth_frame[p2, p1]
             # dist_pixel = depth_frame.get_distance(0, 0) #depth_frame.get_distance(p1, p2)
-            print ("gets to end of depth callback")
+            #print ("gets to end of depth callback")
             # next section leverages the cameras own functions - but requires pyrealsense
 
             #point_3d = np.array([0, 0, 0], ndmin=3)
@@ -110,7 +113,8 @@ if __name__ == "__main__":
     lt = laser_tracker()
     try:
         lt.init()
-        print ("runs")
+        #print ("runs")
     except KeyboardInterrupt:
+        pass
         # log_data(x_d, y_d, z_d)
-        print("data logged") 
+        #print("data logged") 

@@ -23,15 +23,15 @@ def init():
     rospy.spin()
 
 def color_callback(img_color):
-    print ("Enters color callback")
-    rospy.loginfo(img_color.header)
-    rospy.loginfo("Receiving Frames")
+    #print ("Enters color callback")
+    #rospy.loginfo(img_color.header)
+    #rospy.loginfo("Receiving Frames")
     bridge = CvBridge()
     try:
         color_image = bridge.imgmsg_to_cv2(img_color, desired_encoding="passthrough")
-        #print(color_image)
+        ##print(color_image)
         color_image_BGR = cv2.cvtColor(color_image, cv2.COLOR_RGB2BGR)
-        print (color_image_BGR)
+        #print (color_image_BGR)
         color_frame = np.float32(color_image)
         # Convert the BGR (opencv does BGR instead of RGB) color frame to a HSV frame 
         hsv_frame = cv2.cvtColor(color_image_BGR, cv2.COLOR_BGR2HSV)
@@ -54,25 +54,25 @@ def color_callback(img_color):
         p1 = int(avg[0][0])
         p2 = int(avg[0][1])
         pixel = ([p1, p2])
-        print ("x:" + str(p1) + "y:" + str(p2))
+        #print ("x:" + str(p1) + "y:" + str(p2))
         # publish pixels 
         pixel_pub.publish(pixel)
-        print ("gets to end of color callback")
+        #print ("gets to end of color callback")
         #return color_image
         
     except CvBridgeError:
         rospy.logerr("CvBridge Error")
 
 def depth_callback(img_depth):
-    print ("Enters depth callback")
-    rospy.loginfo(img_depth.header)
+    #print ("Enters depth callback")
+    #rospy.loginfo(img_depth.header)
     bridge = CvBridge()
     try:
         depth_image = bridge.imgmsg_to_cv2(img_depth, desired_encoding="passthrough")
         # depth_frame = depth_image
         # depth_pixel = depth_frame[0, 0] #depth_frame[p2, p1]
         # dist_pixel = depth_frame.get_distance(0, 0) #depth_frame.get_distance(p1, p2)
-        print ("gets to end of depth callback")
+        #print ("gets to end of depth callback")
         # next section leverages the cameras own functions - but requires pyrealsense
 
         #point_3d = np.array([0, 0, 0], ndmin=3)
@@ -111,7 +111,8 @@ if __name__ == "__main__":
     rospy.init_node('Laser_Detection_Node')
     try:
         init()
-        print ("runs")
+        #print ("runs")
     except KeyboardInterrupt:
+        pass
         # log_data(x_d, y_d, z_d)
-        print("data logged") 
+        #print("data logged") 
