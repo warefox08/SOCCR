@@ -8,8 +8,8 @@ sys.path.append(os.path.join(os.getcwd(), "comms"))
 sys.path.append(os.path.join(os.getcwd(), "laser_tracking/auto_nav/scripts"))
 
 print(sys.path)
-import motion_functions as mf
-import ltf_class
+# import motion_functions as mf
+import ltf_class as lt
 import listener_class
 import goal_pose_copy as gs
 
@@ -21,14 +21,14 @@ def main():
 	# 	print(test1)
 	# 	print(test2)
 	
-	velocity_publisher, vel_msg = mf.init()
-	[fov_h, res_h, res_v] = lt.init()
+	# velocity_publisher, vel_msg = mf.init()
+
 	listener = listener_class.listener()
 	listener.init()
 
 	[navclient, goal] = gs.init()
 
-	tracker = ltf_class.laser_tracker()
+	tracker = lt.laser_tracker()
 
 	print("START")
 	while(1):
@@ -38,8 +38,8 @@ def main():
 			# distance = 0.5
 			#angle_deg = listener.angle
 			#distance = listener.distance/1000
-			angle_deg, depth, distance_y = tracker.find_vector_to_laser()
-			gs.send_command(navclient, goal, depth, distance_y)
+			angle_deg, distance_z, distance_x = tracker.find_vector_to_laser()
+			gs.send_command(navclient, goal, distance_z, distance_x)
 
 			#mf.send_motion_command(vel_msg, velocity_publisher, angle_deg, distance)
 			listener.lower_flag()

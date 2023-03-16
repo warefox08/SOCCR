@@ -9,6 +9,9 @@ class listener:
       self.flag = 0
       self.angle = 0
       self.distance = 0
+      # port_name = rospy.get_param('~tcp_port','tcp')
+      # baud = int(rospy.get_param('~baud','57600'))
+      # rospy.Subscriber("Team10", String, self.callback)
 
    def callback(self, arg):
       self.raise_flag()
@@ -20,7 +23,7 @@ class listener:
       port_name = rospy.get_param('~tcp_port','tcp')
       baud = int(rospy.get_param('~baud','57600'))
       rospy.Subscriber("Team10", String, self.callback)
-      #rostopic pub Team10 software/comms
+      # rostopic pub Team10 software/comms
 
    def raise_flag(self):
      self.flag = 1
