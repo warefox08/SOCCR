@@ -4,7 +4,7 @@ import rospy
 import actionlib
 from move_base_msgs.msg import MoveBaseAction, MoveBaseGoal
 
-def publishMoveBaseGoalWaitForReply(self, x, y):
+def publishMoveBaseGoalWaitForReply(x, y):
   goal = MoveBaseGoal()
   goal.target_pose.header.frame_id = "map"
   goal.target_pose.header.stamp = rospy.Time.now()
@@ -18,8 +18,8 @@ def publishMoveBaseGoalWaitForReply(self, x, y):
   goal.target_pose.pose.orientation.z = 0
   goal.target_pose.pose.orientation.w = 0
   now = rospy.get_rostime()
-  print "[%i.%i] PubMove: %s x,y,z,w of %f %f %f %f yaw %f"
-    (now.secs,now.nsecs,comment,x,y,z,w,yaw)
+#  print "[%i.%i] PubMove: %s x,y,z,w of %f %f %f %f yaw %f"
+#    (now.secs,now.nsecs,comment,x,y,z,w,yaw)
 
   client = actionlib.SimpleActionClient('move_base', MoveBaseAction)
   client.wait_for_server()
@@ -28,15 +28,15 @@ def publishMoveBaseGoalWaitForReply(self, x, y):
   client.send_goal(goal)
 
   now = rospy.get_rostime()
-  print "[%i.%i] Waiting for result ..." 
+#  print "[%i.%i] Waiting for result ..." 
   wait = client.wait_for_result()
   if not wait:
     rospy.logerr("Action server not available!")
     rospy.signal_shutdown("Action server not available!")
   else:
     now = rospy.get_rostime()
-    print "[%i.%i] Received result" 
-    return client.get_result()
+ #   print "[%i.%i] Received result" 
+ #   return client.get_result()
 
 
         

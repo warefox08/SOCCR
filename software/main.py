@@ -11,7 +11,7 @@ sys.path.append(os.path.join(os.getcwd(), "laser_tracking/auto_nav/scripts"))
 # import motion_functions as mf
 import ltf_class as lt
 import listener_class
-import goal_pose_copy as gs
+import goal_pose2 as gs
 
 def main():
 	rospy.init_node('python_node')
@@ -25,8 +25,6 @@ def main():
 
 	listener = listener_class.listener()
 	listener.init()
-
-	[navclient, goal] = gs.init()
 
 	tracker = lt.laser_tracker()
 
@@ -42,7 +40,8 @@ def main():
 				angle_deg, distance_z, distance_x = tracker.find_vector_to_laser()
 				print ("\nd_z: ", distance_z)
 				print ("d_x: ", distance_x)
-				gs.send_command(navclient, goal, distance_z, distance_x)
+				gs.publishMoveBaseGoalWaitForReply(distance_x, distance_z)
+#				gs.send_command(navclient, goal, distance_z, distance_x)
 			else:
 				print("no laser")
 			#mf.send_motion_command(vel_msg, velocity_publisher, angle_deg, distance)
