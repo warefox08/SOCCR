@@ -14,8 +14,10 @@ class laser_tracker:
         self.res_h = 640 #1280
         self.color_bridge = CvBridge()
         self.depth_bridge = CvBridge()
-        self.depth_msg = None
-        self.color_msg = None
+        self.depth_flag = 0
+        self.color_flag = 0
+        #self.depth_msg = None
+        #self.color_msg = None
         self.depth_sub = rospy.Subscriber("/camera1/aligned_depth_to_color/image_raw", Image, self.color_callback)
         self.color_sub = rospy.Subscriber("/camera1/color/image_raw", Image, self.depth_callback)
         #rospy.spin()
@@ -33,6 +35,8 @@ class laser_tracker:
     
     def color_callback(self, img_msg):
         rospy.loginfo(img_msg.header)
+        if not self.color_flag:
+            self.color_flag = 1
         try:
             print ("gets into color callback")
             # print (img_msg) - BEWARE uncommenting this
@@ -49,6 +53,8 @@ class laser_tracker:
 
     def depth_callback(self, img_msg):
         rospy.loginfo(img_msg.header)
+        if not self.depth_flag:
+            self.depth_flag = 1
         try:
             print ("gets into depth callback")
             self.depth_msg = self.depth_bridge.imgmsg_to_cv2(img_msg, desired_encoding="passthrough")
@@ -155,7 +161,7 @@ if __name__ == "__main__":
     tracker = laser_tracker()
     try:
         while True:
-            if tracker.depth_msg is not None and tracker.color_msg is not None:
+            if (tracker.color_flag and tracker.depth_flag):
                 angle, distance, distance_x = tracker.find_vector_to_laser()
                 print("a: " + str(angle) + " d: " + str(distance))
     except KeyboardInterrupt:
