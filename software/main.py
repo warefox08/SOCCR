@@ -7,7 +7,7 @@ sys.path.append(os.path.join(os.getcwd(), "laser_tracking")) #add function folde
 sys.path.append(os.path.join(os.getcwd(), "comms"))
 sys.path.append(os.path.join(os.getcwd(), "laser_tracking/auto_nav/scripts"))
 
-print(sys.path)
+#print(sys.path)
 # import motion_functions as mf
 import ltf_class as lt
 import listener_class
@@ -38,13 +38,18 @@ def main():
 			# distance = 0.5
 			#angle_deg = listener.angle
 			#distance = listener.distance/1000
-			angle_deg, distance_z, distance_x = tracker.find_vector_to_laser()
-			gs.send_command(navclient, goal, distance_z, distance_x)
-
+			if (tracker.color_flag and tracker.depth_flag):
+				angle_deg, distance_z, distance_x = tracker.find_vector_to_laser()
+				print ("\nd_z: ", distance_z)
+				print ("d_x: ", distance_x)
+				gs.send_command(navclient, goal, distance_z, distance_x)
+			else:
+				print("no laser")
 			#mf.send_motion_command(vel_msg, velocity_publisher, angle_deg, distance)
 			listener.lower_flag()
 			print("flag_lowered")
-
+#		else:
+#			print("no flag")
 			
 
 if __name__ == "__main__":

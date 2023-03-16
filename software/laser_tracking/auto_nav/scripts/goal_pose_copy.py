@@ -5,7 +5,7 @@ from move_base_msgs.msg import MoveBaseAction, MoveBaseGoal
 
 def init():
     navclient = actionlib.SimpleActionClient('move_base',MoveBaseAction)
-    navclient.wait_for_server()
+#    navclient.wait_for_server()
     goal = MoveBaseGoal()
     return navclient, goal
     # goal.target_pose.pose.position.z = 0.0
