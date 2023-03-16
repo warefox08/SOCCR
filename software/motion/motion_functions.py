@@ -42,7 +42,7 @@ def rotate(vel_msg, velocity_publisher, angle_deg):
 
 def move(vel_msg, velocity_publisher, distance):
 	speed = 0.3 #m/s
-	vel_msg.linear.x = abs(speed)
+	vel_msg.linear.x = -abs(speed)
 	#while not rospy.is_shutdown(): #why this? difference to rospy.spin() in rotate?
         #Setting the current time for distance calculus
 	t0 = rospy.Time.now().to_sec()

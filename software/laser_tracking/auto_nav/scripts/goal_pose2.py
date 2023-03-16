@@ -22,8 +22,9 @@ def publishMoveBaseGoalWaitForReply(x, y):
 #    (now.secs,now.nsecs,comment,x,y,z,w,yaw)
 
   client = actionlib.SimpleActionClient('move_base', MoveBaseAction)
+  print("pre wait")
   client.wait_for_server()
-
+  print("post wait")
   # publish the goal to the topic
   client.send_goal(goal)
 
