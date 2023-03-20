@@ -39,6 +39,10 @@ def publishMoveBaseGoalWaitForReply(x, y):
  #   print "[%i.%i] Received result" 
  #   return client.get_result()
 
+if __name__ == '__main__':
+  rospy.init_node('goal_pose_testing')
+  publishMoveBaseGoalWaitForReply(1, 1)
+
 
         
 
