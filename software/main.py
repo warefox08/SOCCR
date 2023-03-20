@@ -8,7 +8,7 @@ sys.path.append(os.path.join(os.getcwd(), "comms"))
 sys.path.append(os.path.join(os.getcwd(), "laser_tracking/auto_nav/scripts"))
 
 #print(sys.path)
-import motion_functions as mf
+#import motion_functions as mf
 import ltf_class as lt
 import listener_class
 import goal_pose2 as gs
@@ -21,7 +21,7 @@ def main():
 	# 	print(test1)
 	# 	print(test2)
 	
-	velocity_publisher, vel_msg = mf.init()
+#	velocity_publisher, vel_msg = mf.init()
 
 	listener = listener_class.listener()
 	listener.init()
