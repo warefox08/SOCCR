@@ -12,3 +12,5 @@ roslaunch realsense2_camera rs_camera.launch camera:=camera1 depth_width:=640 co
 roslaunch auto_nav turtlebot3_auto_nav.launch open_rviz:=false
 
 rosrun rosserial_python serial_node.py tcp
+#if no pushbutton:
+rostopic pub Team10 std_msgs/String hello
