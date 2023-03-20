@@ -1,0 +1,6 @@
+<launch>
+  <include file="/home/user/catkin_ws/src/rosserial_python/nodes/serial_node.py" default="tcp" />
+  <include file="/home/user/catkin_ws/src/realsense-ros/realsense2_camera/launch/rs_camera.launch"/>
+  <include file="/home/user/catkin_ws/src/auto_nav/launch/turtlebot3_auto_nav.launch"/>
+  </node>
+</launch>
