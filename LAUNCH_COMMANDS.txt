@@ -1,4 +1,4 @@
-
+ssh ubuntu@192.168.43.185
 #How to Launch
 
 #if launch on laptop
