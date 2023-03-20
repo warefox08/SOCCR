@@ -1,4 +1,4 @@
-
+ssh ubuntu@192.168.43.185
 #How to Launch
 
 #if launch on laptop
@@ -9,6 +9,8 @@ roscore
 #start
 roslaunch realsense2_camera rs_camera.launch camera:=camera1 depth_width:=640 color_width:=640 depth_height:=480 color_height:=480 depth_fps:=6 color_fps:=6 pointcloud_texture_stream:=RS2_STREAM_COLOR enable_sync:=true align_depth:=true initial_reset:=false filters:=pointcloud
 
-roslaunch auto_nav turtlebot3_auto_nav.launch 
+roslaunch auto_nav turtlebot3_auto_nav.launch open_rviz:=false
 
 rosrun rosserial_python serial_node.py tcp
+#if no pushbutton:
+rostopic pub Team10 std_msgs/String hello
