@@ -21,8 +21,8 @@ def move_command(x,y):
   goal.target_pose.pose.position.z = 0.0
   goal.target_pose.pose.orientation.x = 0.0
   goal.target_pose.pose.orientation.y = 0.0
-  goal.target_pose.pose.orientation.z = 0.4
-  goal.target_pose.pose.orientation.w = 0.750
+  goal.target_pose.pose.orientation.z = 0.0
+  goal.target_pose.pose.orientation.w = 0.0
   
   print("before send_goal")
   navclient.send_goal(goal)
