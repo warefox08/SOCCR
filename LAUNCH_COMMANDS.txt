@@ -1,16 +1,28 @@
 ssh ubuntu@192.168.43.185
 #How to Launch
 
-#if launch on laptop
-roslaunch turtlebot3_bringup turtlebot3_robot.launch
-#if not 
-roscore
+bringup
+launch_camera
+launch_nav
+launch_serial
 
-#start
+run_soccr
+move_command (represents pushbutton being pressed)
+stop_command (stop the robot)
+
+alias run_soccr = 'rosrun soccr main.py'
+
+------------------------------------------------------------------
+
 roslaunch realsense2_camera rs_camera.launch camera:=camera1 depth_width:=640 color_width:=640 depth_height:=480 color_height:=480 depth_fps:=6 color_fps:=6 pointcloud_texture_stream:=RS2_STREAM_COLOR enable_sync:=true align_depth:=true initial_reset:=false filters:=pointcloud
-
 roslaunch auto_nav turtlebot3_auto_nav.launch open_rviz:=false
-
 rosrun rosserial_python serial_node.py tcp
-#if no pushbutton:
-rostopic pub Team10 std_msgs/String hello
+
+# commands:
+alias move_command = 'rostopic pub -1 Team10 std_msgs/String hello'
+alias stop_command = 'rostopic pub -1 /move_base/cancel actionlib_msgs/GoalID -- {}'
+
+alias bringup = 'roslaunch turtlebot3_bringup turtlebot3_robot.launch'
+alias launch_camera = 'roslaunch realsense2_camera rs_camera.launch camera:=camera1 depth_width:=640 color_width:=640 depth_height:=480 color_height:=480 depth_fps:=6 color_fps:=6 pointcloud_texture_stream:=RS2_STREAM_COLOR enable_sync:=true align_depth:=true initial_reset:=false filters:=pointcloud'
+alias launch_nav = 'roslaunch auto_nav turtlebot3_auto_nav.launch open_rviz:=false'
+alias launch_serial = 'rosrun rosserial_python serial_node.py tcp'
