@@ -4,9 +4,9 @@ import sys, os
 import rospy
 
 #sys.path.append(os.path.join(os.getcwd(), "motion")) #add function folder to path
-sys.path.append(os.path.join(os.getcwd(), "laser_tracking")) #add function folder to path
-sys.path.append(os.path.join(os.getcwd(), "comms"))
-sys.path.append(os.path.join(os.getcwd(), "laser_tracking/auto_nav/scripts"))
+#sys.path.append(os.path.join(os.getcwd(), "laser_tracking")) #add function folder to path
+#sys.path.append(os.path.join(os.getcwd(), "comms"))
+#sys.path.append(os.path.join(os.getcwd(), "laser_tracking/auto_nav/scripts"))
 
 #import motion_functions as mf
 import ltf_class as lt
