@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 
 import rospy
 import actionlib
@@ -41,7 +41,7 @@ def publishMoveBaseGoalWaitForReply(x, y):
 
 if __name__ == '__main__':
   rospy.init_node('goal_pose_testing')
-  publishMoveBaseGoalWaitForReply(1, 1)
+  publishMoveBaseGoalWaitForReply(10, 10)
 
 
         
