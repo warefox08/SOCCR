@@ -13,16 +13,16 @@ def move_command(x,y):
 
 # Example of navigation goal
   goal = MoveBaseGoal()
-  goal.target_pose.header.frame_id = "map"
+  goal.target_pose.header.frame_id = "base_link"
   goal.target_pose.header.stamp = rospy.Time.now()
 
   goal.target_pose.pose.position.x = x
   goal.target_pose.pose.position.y = y
-  goal.target_pose.pose.position.z = 0.0
-  goal.target_pose.pose.orientation.x = 0.0
-  goal.target_pose.pose.orientation.y = 0.0
-  goal.target_pose.pose.orientation.z = 0.0
-  goal.target_pose.pose.orientation.w = 0.0
+  #goal.target_pose.pose.position.z = 0.0
+  #goal.target_pose.pose.orientation.x = 0.0
+  #goal.target_pose.pose.orientation.y = 0.0
+  #goal.target_pose.pose.orientation.z = 0.0
+  #goal.target_pose.pose.orientation.w = 0.0
   
   print("before send_goal")
   navclient.send_goal(goal)
