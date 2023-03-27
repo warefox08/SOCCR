@@ -144,10 +144,14 @@ class laser_tracker:
 if __name__ == "__main__":
     rospy.init_node('test')
     tracker = laser_tracker()
+    print("here_1")
     try:
         #pass
+        print("here_2")
         while True:
+            print("here_3")
             if (tracker.color_flag and tracker.depth_flag):
+                print("here_4")
                 angle, distance_z, distance_x = tracker.find_vector_to_laser()
                 print("\nd_z: ", distance_z)
                 print("d_x: ", distance_x)
