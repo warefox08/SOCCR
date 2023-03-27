@@ -134,7 +134,7 @@ class laser_tracker:
         laser_found = 0
         while(not laser_found):
             [laser_found, angle, distance, distance_x] = self.search_for_laser()
-            key = cv2.waitKey(0)
+            key = cv2.waitKey(1)
             if key == 27: # esc key to break 
                 break
         return angle, distance, distance_x
