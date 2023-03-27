@@ -44,6 +44,7 @@ class laser_tracker:
             rospy.logerr("CvBridge Error")
             
     def search_for_laser(self):
+        print("in search_for_laser")
         color_image = cv2.cvtColor(self.color_msg, cv2.COLOR_RGB2BGR)
 
         color_frame = np.float32(color_image)
@@ -72,11 +73,12 @@ class laser_tracker:
     
 
         if (points is not None):
+            print("points is not none")
             [angle, distance, distance_x] = self.find_laser_cords(points,color_image)
             print("laser found")
             return 1, angle, distance, distance_x
         else:
-            # print("laser not found")
+            print("points is none")
             return 0, None, None, None
 
     def find_laser_cords(self, points, color_image):
@@ -113,7 +115,7 @@ class laser_tracker:
         # w = (l)*np.sin(a) # The 'width'i.e. distance between the origin point and the laser point (alt to distance_x)
         
         # log_data(p1, p2, distance_x, angle_deg_h)
-
+        print("pre show_data")
         self.show_data(color_image, p1, p2, distance_origin, distance_x)
 
         return angle_deg_h, distance_origin, distance_x
@@ -121,13 +123,16 @@ class laser_tracker:
     def show_data(self, color_image, p1, p2, d_x, d_y):
         # show frames for debugging 
         #cv2.imshow("red", red_filter)
+        print ("pre im_show")
         cv2.imshow("color", color_image)
         #cv2.imshow("hsv", hsv_frame)
         #cv2.imshow("binary image", img)
         #cv2.imshow('red_filter', red_filter)
+        print ("pre circle")
         cv2.circle(color_image, (p1,p2), 10, (255, 0, 0)) # creates a blue circle of diameter '10' around the average laser coordinate
         cv2.putText(color_image, "x: {}".format(d_x), (50, 400), cv2.FONT_HERSHEY_PLAIN, 2, (255, 255, 255), 2)
         cv2.putText(color_image, "y: {}".format(d_y), (50, 450), cv2.FONT_HERSHEY_PLAIN, 2, (255, 255, 255), 2)
+        print ("post circle")
         #cv2.circle(color_image, (p1,p2), 10, (255, 0, 0))
         #cv2.waitKey(0) # frame by frame for debugging 
 
@@ -135,7 +140,9 @@ class laser_tracker:
         laser_found = 0
         while(not laser_found):
             [laser_found, angle, distance, distance_x] = self.search_for_laser()
+            print ("pre waitkey in find_v_to_laser")
             key = cv2.waitKey(1)
+            print ("post wait_key")
             if key == 27: # esc key to break 
                 break
         return angle, distance, distance_x
@@ -144,12 +151,12 @@ class laser_tracker:
 if __name__ == "__main__":
     rospy.init_node('test')
     tracker = laser_tracker()
-    print("here_1")
+    # print("here_1")
     try:
         #pass
-        print("here_2")
+        # print("here_2")
         while True:
-            print("here_3")
+            # print("here_3")
             if (tracker.color_flag and tracker.depth_flag):
                 print("here_4")
                 angle, distance_z, distance_x = tracker.find_vector_to_laser()
