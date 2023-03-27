@@ -69,23 +69,17 @@ class laser_tracker:
         img = img.astype(np.uint8) #converts the image to int type - each pixel has an int value of 0-255 rathe than floating points between 0 and 
 
         points = cv2.findNonZero(img) #finds coordinates of non-zero pixels 
-
-        # show frames for debugging 
-        #cv2.imshow("red", red_filter)
-        #cv2.imshow("color", color_image)
-        #cv2.imshow("hsv", hsv_frame)
-        #cv2.imshow("binary image", img)
-        #cv2.waitKey(0) # frame by frame for debugging 
+    
 
         if (points is not None):
-            [angle, distance, distance_x] = self.find_laser_cords(points)
+            [angle, distance, distance_x] = self.find_laser_cords(points,color_image)
             print("laser found")
             return 1, angle, distance, distance_x
         else:
             # print("laser not found")
             return 0, None, None, None
 
-    def find_laser_cords(self, points):
+    def find_laser_cords(self, points, color_image):
         avg = np.mean(points, axis=0) #find the average x and y of all red pixels 
         # take the integer values of the average coordinate to later find the distance of the specified pixel
         p1 = int(avg[0][0])
@@ -120,7 +114,22 @@ class laser_tracker:
         
         # log_data(p1, p2, distance_x, angle_deg_h)
 
+        self.show_data(color_image, p1, p2, distance_origin, distance_x)
+
         return angle_deg_h, distance_origin, distance_x
+    
+    def show_data(self, color_image, p1, p2, d_x, d_y):
+        # show frames for debugging 
+        #cv2.imshow("red", red_filter)
+        cv2.imshow("color", color_image)
+        #cv2.imshow("hsv", hsv_frame)
+        #cv2.imshow("binary image", img)
+        #cv2.imshow('red_filter', red_filter)
+        cv2.circle(color_image, (p1,p2), 10, (255, 0, 0)) # creates a blue circle of diameter '10' around the average laser coordinate
+        cv2.putText(color_image, "x: {}".format(d_x), (50, 400), cv2.FONT_HERSHEY_PLAIN, 2, (255, 255, 255), 2)
+        cv2.putText(color_image, "y: {}".format(d_y), (50, 450), cv2.FONT_HERSHEY_PLAIN, 2, (255, 255, 255), 2)
+        #cv2.circle(color_image, (p1,p2), 10, (255, 0, 0))
+        #cv2.waitKey(0) # frame by frame for debugging 
 
     def find_vector_to_laser(self):
         laser_found = 0
