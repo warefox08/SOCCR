@@ -8,7 +8,7 @@ from sensor_msgs.msg import Image
 class laser_tracker:
 
     def __init__(self):
-        self.fov_h = 87
+        self.fov_h = 69
         self.res_v = 480 #720
         self.res_h = 640 #1280
         self.depth_flag = 0
@@ -96,7 +96,7 @@ class laser_tracker:
         angle_rad = np.pi*angle_deg_h/180
         phi_rad = np.pi*phi/180
         # distance_x = np.tan(angle_rad)*distance_origin
-        distance_x = np.sin(angle_rad)*(distance/np.sin(phi_rad))
+        distance_x = -(np.sin(angle_rad)*(distance/np.sin(phi_rad)))
         
         # angle = np.arccos(distance_origin / distance_x) # is this not just returning angle_rad again?
         # angle_d = 180*angle/np.pi
@@ -111,7 +111,7 @@ class laser_tracker:
         # w = (l)*np.sin(a) # The 'width'i.e. distance between the origin point and the laser point (alt to distance_x)
         
         # log_data(p1, p2, distance_x, angle_deg_h)
-        self.show_data(color_image, p1, p2, distance_origin, distance_x)
+        #self.show_data(color_image, p1, p2, distance_origin, distance_x)
 
         return angle_deg_h, distance_origin, distance_x
     
