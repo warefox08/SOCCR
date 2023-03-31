@@ -55,6 +55,10 @@ class laser_tracker:
         lower_red = np.array([160, 70, 90]) #([30, 150, 50]) - these vals included blue and red 
         upper_red = np.array([180, 255, 255]) #([255, 255, 180])
 
+        # thresholding for white background 
+        lower_white = np.array([0, 0, 245])
+        upper_white = np.array([180, 50, 255])
+
         # Create a mask using the HSV range
         mask_colour = cv2.inRange(hsv_frame, lower_red, upper_red)
         # Threshold the HSV image to filter out all 'non-red' pixels
@@ -63,19 +67,29 @@ class laser_tracker:
 
         (minVal, maxVal, minLoc, maxLoc) = cv2.minMaxLoc(mask_colour) #finds the min, max and index values of the mask - useful data for mask tuning
         
+        # backup thresholding 
+        mask_white = cv2.inRange(hsv_frame, lower_white, upper_white)
+        white_filter = cv2.bitwise_and(color_image, color_image, mask = mask_white)
         # Make a binarised version of the image and find the coordinates of non-zero pixels 
 
         img = cv2.cvtColor(red_filter,cv2.COLOR_BGR2GRAY)
         img = img.astype(np.uint8) #converts the image to int type - each pixel has an int value of 0-255 rathe than floating points between 0 and 
 
         points = cv2.findNonZero(img) #finds coordinates of non-zero pixels 
+
+        img_white = cv2.cvtColor(white_filter,cv2.COLOR_BGR2GRAY)
+        img_white = img.astype(np.uint8) #converts the image to int type - each pixel has an int value of 0-255 rathe than floating points between 0 and 
+
+        points_white = cv2.findNonZero(img_white) #finds coordinates of non-zero pixels 
     
 
         if (points is not None):
             [angle, distance, distance_x] = self.find_laser_cords(points,color_image)
             return 1, angle, distance, distance_x
         else:
-            return 0, None, None, None
+            [angle, distance, distance_x] = self.find_laser_cords(points_white,color_image)
+            return 1, angle, distance, distance_x
+            #return 0, None, None, None
 
     def find_laser_cords(self, points, color_image):
         avg = np.mean(points, axis=0) #find the average x and y of all red pixels 
@@ -111,7 +125,7 @@ class laser_tracker:
         # w = (l)*np.sin(a) # The 'width'i.e. distance between the origin point and the laser point (alt to distance_x)
         
         # log_data(p1, p2, distance_x, angle_deg_h)
-        #self.show_data(color_image, p1, p2, distance_origin, distance_x)
+        self.show_data(color_image, p1, p2, distance_origin, distance_x)
 
         return angle_deg_h, distance_origin, distance_x
     
