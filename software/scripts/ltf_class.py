@@ -56,7 +56,7 @@ class laser_tracker:
         upper_red = np.array([180, 255, 255]) #([255, 255, 180])
 
         # thresholding for white background 
-        lower_white = np.array([0, 0, 245])
+        lower_white = np.array([0, 0, 200])
         upper_white = np.array([180, 50, 255])
 
         # Create a mask using the HSV range
@@ -86,10 +86,12 @@ class laser_tracker:
         if (points is not None):
             [angle, distance, distance_x] = self.find_laser_cords(points,color_image)
             return 1, angle, distance, distance_x
-        else:
+        elif (points_white is not None):
             [angle, distance, distance_x] = self.find_laser_cords(points_white,color_image)
             return 1, angle, distance, distance_x
-            #return 0, None, None, None
+        else:
+            cv2.imshow("color_image", color_image)
+            return 0, None, None, None
 
     def find_laser_cords(self, points, color_image):
         avg = np.mean(points, axis=0) #find the average x and y of all red pixels 
