@@ -52,12 +52,12 @@ class laser_tracker:
         hsv_frame = cv2.cvtColor(color_image, cv2.COLOR_BGR2HSV)
 
         # Define range of red color in HSV -> red hue boundary -- worth testing out and messing around with 
-        lower_red = np.array([160, 70, 90]) #([30, 150, 50]) - these vals included blue and red 
+        lower_red = np.array([160, 70, 150]) #([30, 150, 50]) - these vals included blue and red 
         upper_red = np.array([180, 255, 255]) #([255, 255, 180])
 
         # thresholding for white background 
-        lower_white = np.array([0, 0, 200])
-        upper_white = np.array([180, 50, 255])
+        lower_white = np.array([0, 0, 180])
+        upper_white = np.array([180, 150, 255])
 
         # Create a mask using the HSV range
         mask_colour = cv2.inRange(hsv_frame, lower_red, upper_red)
