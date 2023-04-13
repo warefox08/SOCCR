@@ -26,15 +26,22 @@ print("START")
 while(1):
 	if listener.flag == 1:
 		print("flag raised")
-		if (tracker.color_flag and tracker.depth_flag):
-			angle_deg, distance_z, distance_x = tracker.find_vector_to_laser()
-			print ("\nd_z: ", distance_z)
-			print ("d_x: ", distance_x)
-			#mf.send_motion_command(vel_msg, velocity_publisher, angle_deg, distance_z/1000)
-			gs.move_command(distance_x, distance_z)
-		else:
-			print("no laser")
+		if listener.command == "M":
+			if (tracker.color_flag and tracker.depth_flag):
+				angle_deg, distance_z, distance_x = tracker.find_vector_to_laser()
+				print ("\nd_z: ", distance_z)
+				print ("d_x: ", distance_x)
+				#mf.send_motion_command(vel_msg, velocity_publisher, angle_deg, distance_z/1000)
+				gs.move_command(distance_x, distance_z, 0)
+			else:
+				print("no laser")
+		if listener.command == "R":
+			gs.move_command(0, 0, -0.523)
+		if listener.command == "L":
+			gs.move_command(0,0, 0.523)
+
 		listener.lower_flag()
 		print("flag_lowered")
-#		else:
-#			print("no flag")
+
+	#		else:
+	#			print("no flag")
