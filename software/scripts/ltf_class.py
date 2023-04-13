@@ -51,21 +51,27 @@ class laser_tracker:
         # Convert the BGR (opencv does BGR instead of RGB) color frame to a HSV frame 
         hsv_frame = cv2.cvtColor(color_image, cv2.COLOR_BGR2HSV)
 
+        # lower boundary RED color range values; Hue (0 - 10)
+        l_red = np.array([0, 70, 150])
+        u_red = np.array([10, 255, 255])
         # Define range of red color in HSV -> red hue boundary -- worth testing out and messing around with 
-        lower_red = np.array([160, 70, 150]) #([30, 150, 50]) - these vals included blue and red 
-        upper_red = np.array([180, 255, 255]) #([255, 255, 180])
+        lower_red = np.array([170, 70, 150]) #([30, 150, 50]) - these vals included blue and red 
+        upper_red = np.array([179, 255, 255]) #([255, 255, 180])
 
         # thresholding for white background 
         lower_white = np.array([0, 0, 180])
-        upper_white = np.array([180, 150, 255])
+        upper_white = np.array([179, 150, 255])
 
         # Create a mask using the HSV range
-        mask_colour = cv2.inRange(hsv_frame, lower_red, upper_red)
+        lower_mask = cv2.inRange(hsv_frame, l_red, u_red)
+        upper_mask = cv2.inRange(hsv_frame, lower_red, upper_red)
+        full_mask = lower_mask + upper_mask;
+
         # Threshold the HSV image to filter out all 'non-red' pixels
         #red_filter = cv2.bitwise_and(color_frame, color_frame, mask = mask_colour)
-        red_filter = cv2.bitwise_and(color_image, color_image, mask = mask_colour)
+        red_filter = cv2.bitwise_and(color_image, color_image, mask = full_mask)
 
-        (minVal, maxVal, minLoc, maxLoc) = cv2.minMaxLoc(mask_colour) #finds the min, max and index values of the mask - useful data for mask tuning
+        (minVal, maxVal, minLoc, maxLoc) = cv2.minMaxLoc(full_mask) #finds the min, max and index values of the mask - useful data for mask tuning
         
         # backup thresholding 
         mask_white = cv2.inRange(hsv_frame, lower_white, upper_white)
@@ -88,6 +94,7 @@ class laser_tracker:
             return 1, angle, distance, distance_x
         elif (points_white is not None):
             [angle, distance, distance_x] = self.find_laser_cords(points_white,color_image)
+            print ("in case 2")
             return 1, angle, distance, distance_x
         else:
             cv2.imshow("color_image", color_image)
