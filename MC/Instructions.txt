@@ -1,0 +1,5 @@
+1. Change SSID, Password and ROS IP to the latest configurations
+2. Upload new version of code to both ESP32 and Spresense
+3. Wait for ESP32 To connect to the network that the turtlebot is on
+4. Run rosrun rosserial_python serial_node.py tcp if it is not included in the launch file
+5. Make sure there is a new device listening on the network with the Turtlebot in the ROS terminal
