@@ -51,44 +51,82 @@ class laser_tracker:
         # Convert the BGR (opencv does BGR instead of RGB) color frame to a HSV frame 
         hsv_frame = cv2.cvtColor(color_image, cv2.COLOR_BGR2HSV)
 
-        # lower boundary RED color range values; Hue (0 - 10)
-        l_red = np.array([0, 70, 150])
+        #HLS frame
+        hsl_frame = cv2.cvtColor(color_image, cv2.COLOR_BGR2HLS)
+
+        # Thresholding for red laser
+        # Light Red
+        l_red = np.array([0, 70, 220])
         u_red = np.array([10, 255, 255])
-        # Define range of red color in HSV -> red hue boundary -- worth testing out and messing around with 
-        lower_red = np.array([170, 70, 150]) #([30, 150, 50]) - these vals included blue and red 
+        # Dark Red 
+        lower_red = np.array([170, 70, 220]) #([30, 150, 50]) - these vals included blue and red 
         upper_red = np.array([179, 255, 255]) #([255, 255, 180])
-
-        # thresholding for white background 
-        lower_white = np.array([0, 0, 180])
-        upper_white = np.array([179, 150, 255])
-
-        # Create a mask using the HSV range
+        # Create HSV mask for red laser 
         lower_mask = cv2.inRange(hsv_frame, l_red, u_red)
         upper_mask = cv2.inRange(hsv_frame, lower_red, upper_red)
         full_mask = lower_mask + upper_mask;
-
         # Threshold the HSV image to filter out all 'non-red' pixels
         #red_filter = cv2.bitwise_and(color_frame, color_frame, mask = mask_colour)
         red_filter = cv2.bitwise_and(color_image, color_image, mask = full_mask)
-
         (minVal, maxVal, minLoc, maxLoc) = cv2.minMaxLoc(full_mask) #finds the min, max and index values of the mask - useful data for mask tuning
-        
+
+
+        # Thresholding for blue laser
+        l_blue = np.array([90, 70, 200])
+        u_blue = np.array([120, 255, 255])
+        # Blue mask
+        blue_mask = cv2.inRange(hsv_frame, l_blue, u_blue)
+        # Blue filter
+        blue_filter = cv2.bitwise_and(color_image, color_image, mask = blue_mask)
+
+        # Thresholding for white background - HSV 
+        lower_white = np.array([0, 0, 180])
+        upper_white = np.array([179, 150, 255])
         # backup thresholding 
         mask_white = cv2.inRange(hsv_frame, lower_white, upper_white)
         white_filter = cv2.bitwise_and(color_image, color_image, mask = mask_white)
+
+        #HSL Mask and filter - detects bright white 
+        hsl_lower = np.array([0, 250, 225])
+        hsl_upper = np.array([255, 255, 255])
+        hsl_mask = cv2.inRange(hsl_frame, hsl_lower, hsl_upper)
+        hsl_filter = cv2.bitwise_and(color_image, color_image, mask = hsl_mask)
+
+        #double laser frame - if using both lasers, binarise each image and superpose them 
+        binary_blue = cv2.cvtColor(blue_filter,cv2.COLOR_BGR2GRAY)
+        binary_red = cv2.cvtColor(red_filter,cv2.COLOR_BGR2GRAY)
+        duo_laser = cv2.bitwise_and(red_filter, blue_filter) #make bitwise and if dichroic setup 
+
         # Make a binarised version of the image and find the coordinates of non-zero pixels 
+        # Using red 
+        #img = cv2.cvtColor(red_filter,cv2.COLOR_BGR2GRAY)
 
-        img = cv2.cvtColor(red_filter,cv2.COLOR_BGR2GRAY)
+        # Using Blue
+        img = cv2.cvtColor(blue_filter,cv2.COLOR_BGR2GRAY)
+
+        #Using both 
+        #img = cv2.cvtColor(duo_laser,cv2.COLOR_BGR2GRAY)
+        #img = cv2.bitwise_and(binary_blue, binary_red)
+        
         img = img.astype(np.uint8) #converts the image to int type - each pixel has an int value of 0-255 rathe than floating points between 0 and 
-
         points = cv2.findNonZero(img) #finds coordinates of non-zero pixels 
 
+        # Backup tracking - Bright white might be better detected with HSL and it may be too vague to look for it anyway 
         img_white = cv2.cvtColor(white_filter,cv2.COLOR_BGR2GRAY)
-        img_white = img.astype(np.uint8) #converts the image to int type - each pixel has an int value of 0-255 rathe than floating points between 0 and 
-
+        img_white = img.astype(np.uint8) 
         points_white = cv2.findNonZero(img_white) #finds coordinates of non-zero pixels 
-    
 
+        # Debug imshows - for intermediate frames 
+        #cv2.imshow("hsv", hsv_frame)
+        #cv2.imshow('red_filter', red_filter)
+        #cv2.imshow('hsl', hsl_filter)
+        #cv2.imshow('blue', blue_filter)
+        #cv2.imshow('duo', duo_laser)
+        #cv2.imshow('binblue', binary_blue)
+        #cv2.imshow('binred', binary_red)
+        #cv2.imshow('and', img)
+    
+        # if laser is picked up, find its coordinates 
         if (points is not None):
             [angle, distance, distance_x] = self.find_laser_cords(points,color_image)
             return 1, angle, distance, distance_x
