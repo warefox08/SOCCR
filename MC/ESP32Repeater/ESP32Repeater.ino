@@ -5,9 +5,9 @@
 #include <HardwareSerial.h>
 
 WiFiClient espClient; //WiFi Client Obj
-const char* ssid = "ESP32";
-const char* password = "14531453";
-IPAddress server(192,168,175,124); //Public IP of device listening
+const char* ssid = "qinle";
+const char* password = "qinle010108";
+IPAddress server(192,168,143,185); //Public IP of device listening
 const uint16_t serverPort = 11411; //Default ROS Port
 
 #define LED 2
@@ -34,10 +34,10 @@ void IRAM_ATTR trans(){
 void setup() {
   Serial.begin(9600);//Serial for debugging
   RCV.begin(115200, SERIAL_8N1, 16, 17); //Serial to Spresense
-  //configureWIFI();//Configure Comms
-  //nh.getHardware()->setConnection(server, serverPort); //Configure ROS node socket
-  //nh.initNode(); 
-  //nh.advertise(chatter); 
+  configureWIFI();//Configure Comms
+  nh.getHardware()->setConnection(server, serverPort); //Configure ROS node socket
+  nh.initNode(); 
+  nh.advertise(chatter); 
   //nh.subscribe(chitter);
   pinMode(LED,OUTPUT);
   delay(1000);
@@ -62,11 +62,12 @@ void loop() {
       transmit = false;
     }
   
-  //chatter.publish(&str_msg); //Send Message
+  chatter.publish(&str_msg); //Send Message
   Serial.print(str_msg.data);
   }
+  nh.spinOnce();
   delay(100);
- // nh.spinOnce();
+  
 }
 void configureWIFI() {
   WiFi.begin(ssid, password);//Begins Wifi Connection

@@ -22,9 +22,8 @@ Adafruit_ST7789 tft = Adafruit_ST7789(TFT_CS, TFT_DC, TFT_RST);
 //Adafruit_ST7789 tft = Adafruit_ST7789(&SPI4, TFT_CS, TFT_DC, TFT_RST);
 //Adafruit_ST7789 tft = Adafruit_ST7789(TFT_CS, TFT_DC, TFT_MOSI, TFT_SCLK, TFT_RST);
 char guipos = 0;
-char* guitext[3] = {"Move", "Interact", "Status"};
+char* guitext[3] = {"Move", "Stop", "Turn"};
 char commandtxt[3] ={'M','I','S'};
-//char* commandtxt[3] = {0, 1, 0};
 
 bool transmit = false;
 bool buttonpress[3] = {false, false, false};
