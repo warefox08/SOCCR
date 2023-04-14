@@ -15,33 +15,52 @@
 #define PBL 5
 
 #define TFT_CS        10
-#define TFT_RST        9 
+#define TFT_RST        9
 #define TFT_DC         8
+
+#define LENGTH(X) (sizeof X/sizeof X[0])
 
 Adafruit_ST7789 tft = Adafruit_ST7789(TFT_CS, TFT_DC, TFT_RST);
 //Adafruit_ST7789 tft = Adafruit_ST7789(&SPI4, TFT_CS, TFT_DC, TFT_RST);
 //Adafruit_ST7789 tft = Adafruit_ST7789(TFT_CS, TFT_DC, TFT_MOSI, TFT_SCLK, TFT_RST);
 char guipos = 0;
-char* guitext[3] = {"Move", "Stop", "Turn"};
-char commandtxt[3] ={'M','I','S'};
+char* guitext[4] = {"Move", "Stop", "Right", "Left"};
+char commandtxt[4] = {'M', 'S', 'R', 'L'};
 
 bool transmit = false;
 bool buttonpress[3] = {false, false, false};
+
+void guidown() {
+  if (guipos > 0) {
+    tft.setCursor(200, guipos * 34);
+    tft.setTextColor(ST77XX_BLACK);
+    tft.print("<");
+    guipos--;
+    tft.setCursor(200, guipos * 34);
+    tft.setTextColor(ST77XX_WHITE);
+    tft.print("<");
+  }
+}
+
+void guiup() {
+  if (guipos < (sizeof(guitext) / sizeof(*guitext)) - 1) {
+    tft.setCursor(200, guipos * 34);
+    tft.setTextColor(ST77XX_BLACK);
+    tft.print("<");
+    guipos++;
+    tft.setCursor(200, guipos * 34);
+    tft.setTextColor(ST77XX_WHITE);
+    tft.print("<");
+  }
+}
+
 
 void left() {
   //Serial.print("Left");
   static unsigned long OldIntTimeL;
   unsigned long IntTimeL = millis();
   if ((IntTimeL - OldIntTimeL) > 100) {
-    if (guipos > 0) {
-      tft.setCursor(200, guipos * 34);
-      tft.setTextColor(ST77XX_BLACK);
-      tft.print("<");
-      guipos--;
-      tft.setCursor(200, guipos * 34);
-      tft.setTextColor(ST77XX_WHITE);
-      tft.print("<");
-    }
+    guidown();
   }
   OldIntTimeL = IntTimeL;
 }
@@ -50,15 +69,7 @@ void right() {
   static unsigned long OldIntTimeR;
   unsigned long IntTimeR = millis();
   if ((IntTimeR - OldIntTimeR) > 100) {
-    if (guipos < (sizeof(guitext) / sizeof(*guitext)) - 1) {
-      tft.setCursor(200, guipos * 34);
-      tft.setTextColor(ST77XX_BLACK);
-      tft.print("<");
-      guipos++;
-      tft.setCursor(200, guipos * 34);
-      tft.setTextColor(ST77XX_WHITE);
-      tft.print("<");
-    }
+    guiup();
   }
   OldIntTimeR = IntTimeR;
 }
@@ -89,13 +100,15 @@ void setup() {
 void loop() {
 
 }
+void screenstate(char ScrSt) {
 
+}
 void tftsetup() {
   tft.init(240, 240);
   tft.fillScreen(ST77XX_BLACK);
   tft.setTextColor(ST77XX_WHITE);
   tft.setTextSize(3);
-  for (int i = 0; (i < sizeof(guitext) / sizeof(*guitext)); i++) {
+  for (int i = 0; (i < LENGTH(guitext)); i++) {
     tft.setCursor(0, i * 32);
     tft.print(guitext[i]);
   }
