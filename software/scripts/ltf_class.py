@@ -72,7 +72,7 @@ class laser_tracker:
 
 
         # Thresholding for blue laser
-        l_blue = np.array([90, 70, 200])
+        l_blue = np.array([105, 70, 225])
         u_blue = np.array([120, 255, 255])
         # Blue mask
         blue_mask = cv2.inRange(hsv_frame, l_blue, u_blue)
@@ -172,7 +172,7 @@ class laser_tracker:
         # w = (l)*np.sin(a) # The 'width'i.e. distance between the origin point and the laser point (alt to distance_x)
         
         # log_data(p1, p2, distance_x, angle_deg_h)
-        self.show_data(color_image, p1, p2, distance, distance_x) # was returning distance_origin ?
+        #self.show_data(color_image, p1, p2, distance, distance_x) # was returning distance_origin ?
 
         return angle_deg_h, distance, distance_x
     
