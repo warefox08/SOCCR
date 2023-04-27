@@ -8,9 +8,9 @@
 #include <Adafruit_ST7789.h> // Hardware-specific library for ST7789
 
 
-#define PBR 7
+#define PBR 5
 #define PBC 6
-#define PBL 5
+#define PBL 7
 
 #define TFT_CS        10
 #define TFT_RST        9
@@ -24,6 +24,7 @@ Adafruit_ST7789 tft = Adafruit_ST7789(TFT_CS, TFT_DC, TFT_RST);
 char guipos = 0;
 char* guitext[4] = {"Move", "Right", "Left", "Stop"};
 char commandtxt[4] = {'M', 'R', 'L', 'S'};
+char guilen = LENGTH(guitext)-1; 
 
 bool transmit = false;
 bool buttonpress[3] = {false, false, false};
@@ -81,7 +82,6 @@ void centre() {
     Serial.print(guitext[guipos]);
     Serial2.write(commandtxt[guipos]);
     responseT = millis();
-    screenstate(commandtxt[guipos]);
   }
   OldIntTimeC = IntTimeC;
 }
@@ -104,17 +104,44 @@ void setup() {
 void loop() {
   if (Serial2.available()) {
     char cmd = Serial2.read();
-    if (cmd == "C"){
-      screenstate("C");  
+    switch (cmd){
+      case 'C':
+      screenstate(cmd);
+      delay(100);
+      tft.setTextColor(ST77XX_WHITE);
+      tft.setCursor(0, 128);
+      tft.print("Movement Complete");
+      delay(1500);
+      tft.setTextColor(ST77XX_BLACK);
+      tft.setCursor(0, 128);
+      tft.print("Movement Complete");
+      break;
+      
+      case 'N':
+      screenstate(cmd);
+      delay(100);
+      tft.setTextColor(ST77XX_WHITE);
+      tft.setCursor(0, 128);
+      tft.print("Laser Not Found");
+      delay(1500);
+      tft.setTextColor(ST77XX_BLACK);
+      tft.setCursor(0, 128);
+      tft.print("Laser Not Found");
+      break;
+      case 'F':
+      tft.setTextColor(ST77XX_WHITE);
+      tft.setCursor(0, 128);
+      tft.print("Laser Found");
+      delay(1500);
+      screenstate(cmd);
+      break;
     }
-    if (cmd == "F"){
-      screenstate("F");  
-    }
-    float T = millis() - responseT;
-    Serial.print("\n");
-    Serial.print(T);
+    //float T = millis() - responseT;
+    //Serial.print("\n");
+    //Serial.print(T);
   }
 }
+
 void screenstate(char ScrSt) {
   switch (ScrSt) {
     case 'F':
@@ -141,10 +168,11 @@ void screenstate(char ScrSt) {
         tft.setTextColor(ST77XX_WHITE);
         tft.print(">");
         tft.setTextSize(3);
-        for (int i = 0; (i < (LENGTH(guitext) - 1)); i++) {
+        for (int i = 0; i < guilen; i++) {
           tft.setCursor(35, i * 32);
           tft.print(guitext[i]);
         }
+        tft.drawLine(0,guilen*32,240,guilen*32, ST77XX_WHITE);
       }
       DF = 1;
       break;
@@ -155,10 +183,12 @@ void tftsetup() {
   tft.fillScreen(ST77XX_BLACK);
   tft.setTextColor(ST77XX_WHITE);
   tft.setTextSize(3);
-  for (int i = 0; (i < (LENGTH(guitext) - 1)); i++) {
+  for (int i = 0; i < guilen; i++) {
     tft.setCursor(35, i * 32);
     tft.print(guitext[i]);
   }
+  tft.drawLine(0,guilen*32,240, guilen*32, ST77XX_WHITE);
+  
   guipos = 0;
   tft.setCursor(10, 0);
   tft.setTextColor(ST77XX_WHITE);
