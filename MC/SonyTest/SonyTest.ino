@@ -31,6 +31,8 @@ bool transmit = false;
 bool buttonpress[3] = {false, false, false};
 bool DF=1;
 
+unsigned long responseT;
+  
 void guidown() {
   if (guipos > 0) {
     tft.setCursor(200, guipos * 34);
@@ -80,6 +82,7 @@ void centre() {
   if ((IntTimeC - OldIntTimeC) > 100) {
     Serial.print(guitext[guipos]);
     Serial2.write(commandtxt[guipos]);
+    responseT = millis();
     screenstate(commandtxt[guipos]);
   }
   OldIntTimeC = IntTimeC;
@@ -101,7 +104,12 @@ void setup() {
 }
 
 void loop() {
-
+  if (Serial2.available()) {
+    char cmd = Serial2.read();
+    float T = millis()-responseT;
+    Serial.print("\n");
+    Serial.print(T);
+  }
 }
 void screenstate(char ScrSt) {
 switch(ScrSt){

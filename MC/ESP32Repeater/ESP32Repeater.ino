@@ -19,6 +19,7 @@ HardwareSerial RCV(2);
 void messageCb( const std_msgs::String& Feedback) {
   Serial.write("Received:");
   Serial.write(Feedback.data);
+  RCV.write(Feedback.data);
 }
 
 ros::NodeHandle nh;
@@ -40,7 +41,7 @@ void setup() {
   nh.getHardware()->setConnection(server, serverPort); //Configure ROS node socket
   nh.initNode();
   nh.advertise(chatter);
-  //nh.subscribe(chitter);
+  nh.subscribe(chitter);
   pinMode(LED, OUTPUT);
   delay(1000);
 }
