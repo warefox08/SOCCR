@@ -15,7 +15,6 @@ class laser_tracker:
         self.color_flag = 0
         self.depth_sub = rospy.Subscriber("/camera1/aligned_depth_to_color/image_raw", Image, self.depth_callback)
         self.color_sub = rospy.Subscriber("/camera1/color/image_raw", Image, self.color_callback)
-        self.frame_counter = 0
         #rospy.spin()
         #rospy.sleep(5)
     
@@ -27,7 +26,6 @@ class laser_tracker:
             print("color flag raised")
         try:
             #print ("gets into color callback")
-            self.frame_counter = self.frame_counter + 1
             self.color_msg = bridge.imgmsg_to_cv2(img_msg, desired_encoding="passthrough")
 
         except CvBridgeError:
