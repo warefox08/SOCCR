@@ -12,7 +12,7 @@ class listener:
       self.distance = 0
       self.command = ""
       self.cancel_pub = rospy.Publisher("/move_base/cancel", GoalID, queue_size=1)
-#      self.feedback_pub = rospy.Publisher("/Feedback", String, queue_size=1)
+      self.feedback_pub = rospy.Publisher("/Feedback", String, queue_size=1)
       # port_name = rospy.get_param('~tcp_port','tcp')
       # baud = int(rospy.get_param('~baud','57600'))
       # rospy.Subscriber("Team10", String, self.callback)

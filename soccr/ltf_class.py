@@ -132,7 +132,7 @@ class laser_tracker:
     
         # if laser is picked up, find its coordinates 
         if (points is not None):
-            print(points)
+#            print(points)
             [angle, distance, distance_x] = self.find_laser_cords(points,color_image)
             return 1, angle, distance, distance_x
         #elif (points_white is not None):

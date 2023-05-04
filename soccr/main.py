@@ -27,6 +27,9 @@ print("START")
 while(1):
 	if listener.flag == 1:
 #		print("flag raised")
+		if listener.command == "D":
+			print("move 1m forward")
+			gs.move_command(1, 0, 0, 1)
 		if listener.command == "M":
 #			print (tracker.color_flag)
 #			print (tracker.depth_flag)
@@ -35,17 +38,18 @@ while(1):
 			if (tracker.color_flag and tracker.depth_flag):
 				laser_found, _, distance_x, distance_z = tracker.search_for_laser()
 			if laser_found:
-#				listener.pub_feedback("F") #found laser
+				listener.pub_feedback("F") #found laser
 				print ("\nd_z: ", distance_z/1000)
 				print ("d_x: ", distance_x/1000)
 				alpha = math.tan(distance_z/distance_x)
 				o_z = math.sin(alpha/2)
 				o_w = math.cos(alpha/2)
-				gs.move_command(distance_x/1000, distance_z/1000, o_z,o_w)
+				gs.move_command(distance_x/1000, distance_z/1000, 0, 1)
+#				gs.move_command(distance_x/1000, distance_z/1000, o_z,o_w)
 #				gs.move_command(1, -0.5, 0, 0)
 				print("move sent")
 			else:
-#				listener.pub_feedback("N") #no laser
+				listener.pub_feedback("N") #no laser
 				print("no move sent")
 		if listener.command == "R":
 		#	gs.move_command(0, 0, -0.259, 0.966) #30 deg
@@ -55,6 +59,7 @@ while(1):
 			gs.move_command(0, 0, 0.383, 0.924)
 		listener.lower_flag()
 #		print("flag_lowered")
-#		listener.pub_feedback("C") #completed motion
+		listener.pub_feedback("C") #completed motion
+		print("C")
 	#		else:
 	#			print("no flag")
