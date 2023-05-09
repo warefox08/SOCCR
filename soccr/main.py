@@ -33,6 +33,8 @@ while(1):
 		if listener.command == "M":
 #			print (tracker.color_flag)
 #			print (tracker.depth_flag)
+			rospy.set_param('yaw_goal_tolerance', 6.28)
+			rospy.set_param('xy_goal_tolerance', 0.1)
 			laser_found = 0
 			print(tracker.frame_counter)
 			if (tracker.color_flag and tracker.depth_flag):
@@ -53,9 +55,13 @@ while(1):
 				print("no move sent")
 		if listener.command == "R":
 		#	gs.move_command(0, 0, -0.259, 0.966) #30 deg
+			rospy.set_param('yaw_goal_tolerance', 0.1)
+			rospy.set_param('xy_goal_tolerance', 10)
 			gs.move_command(0, 0, -0.383, 0.924) #45 deg
 		if listener.command == "L":
 #			gs.move_command(0,0, 0.259, 0.966) #30 deg
+			rospy.set_param('yaw_goal_tolerance', 0.1)
+			rospy.set_param('xy_goal_tolerance', 10)
 			gs.move_command(0, 0, 0.383, 0.924)
 		listener.lower_flag()
 #		print("flag_lowered")
