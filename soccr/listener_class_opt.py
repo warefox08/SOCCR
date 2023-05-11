@@ -24,7 +24,7 @@ class listener: #Class listener that receives commands and publishes feedback to
 
    def raise_flag(self):
       self.flag = 1
-    
+
    def lower_flag(self):
      self.flag = 0
 

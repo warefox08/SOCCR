@@ -15,11 +15,11 @@ class laser_tracker:
         self.color_flag = 0
         self.depth_sub = rospy.Subscriber("/camera1/aligned_depth_to_color/image_raw", Image, self.depth_callback)
         self.color_sub = rospy.Subscriber("/camera1/color/image_raw", Image, self.color_callback)
-        #rospy.spin()
-        #rospy.sleep(5)
+        self.frame_count = 0
     
     def color_callback(self, img_msg):
         #rospy.loginfo(img_msg.header)
+        self.frame_count = self.frame_count + 1
         bridge = CvBridge()
         if not self.color_flag:
             self.color_flag = 1
@@ -200,6 +200,8 @@ class laser_tracker:
                 break
         return angle, distance, distance_x
 
+    def save_image(self):
+        cv2.imwrite("image_"+str(self.frame_count),self.color_msg)
 
 if __name__ == "__main__":
     rospy.init_node('test')

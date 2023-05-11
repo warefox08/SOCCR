@@ -13,7 +13,7 @@ def move_command(x,y, rot_z, rot_w, frame):
 
 # Example of navigation goal
   goal = MoveBaseGoal()
-  goal.target_pose.header.frame_id = frame 
+  goal.target_pose.header.frame_id = "base_link" 
   goal.target_pose.header.stamp = rospy.Time.now()
 
   goal.target_pose.pose.position.x = x
