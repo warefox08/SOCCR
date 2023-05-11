@@ -6,14 +6,14 @@ from move_base_msgs.msg import MoveBaseAction, MoveBaseGoal
 
 # Callbacks definition
 
-def move_command(x,y, rot_z, rot_w):
+def move_command(x,y, rot_z, rot_w, frame):
 
   navclient = actionlib.SimpleActionClient('move_base',MoveBaseAction)
   navclient.wait_for_server()
 
 # Example of navigation goal
   goal = MoveBaseGoal()
-  goal.target_pose.header.frame_id = "base_link"
+  goal.target_pose.header.frame_id = frame 
   goal.target_pose.header.stamp = rospy.Time.now()
 
   goal.target_pose.pose.position.x = x
@@ -24,9 +24,7 @@ def move_command(x,y, rot_z, rot_w):
   goal.target_pose.pose.orientation.z = rot_z
   goal.target_pose.pose.orientation.w = rot_w
   
-  print("before send_goal")
   navclient.send_goal(goal)
-  print("after send_goal")
   finished = navclient.wait_for_result()
   print("finished")
   if not finished:
