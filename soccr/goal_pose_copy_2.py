@@ -6,7 +6,7 @@ from move_base_msgs.msg import MoveBaseAction, MoveBaseGoal
 
 # Callbacks definition
 
-def move_command(x,y, rot_z, rot_w, frame):
+def move_command(x,y, rot_z, rot_w):
 
   navclient = actionlib.SimpleActionClient('move_base',MoveBaseAction)
   navclient.wait_for_server()

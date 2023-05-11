@@ -32,8 +32,10 @@ while True: #Loop infinitely
                 laser_found, _, distance_x, distance_y = tracker.search_for_laser() #Find x and z distace
             if laser_found:
                 listener.pub_feedback("f")  #Publish feedback to device that laser has been found 
+                listener.pub_feedback("X"+str(distance_x/1000))  #Publish x distance to device 
+                listener.pub_feedback("Y"+str(distance_y/1000))  #Publish y distance to device 
                 gs.move_command(distance_x/1000, distance_y/1000, 0, 1) #Send move command
-                listener.pub_feedback("m")  #Publish feedback to device that execution is over 
+                listener.pub_feedback("complete")  #Publish feedback to device that execution is over 
             else:
                 listener.pub_feedback("n")  #Publish feedback to device that no laser found
 

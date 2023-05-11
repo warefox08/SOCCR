@@ -153,8 +153,6 @@ class laser_tracker:
         # The color frame is 640x480, with 0,0 at the top left pixel, reset 0,0 to the centre of the frame by translation
         p1_o = p1-320
         p2_o = -p2+240
-        print(p1_o)
-        print(p2_o)
         deg_per_pixel_h = self.fov_h/self.res_h
         angle_deg_h = (p1-320)*deg_per_pixel_h
         phi = 90-angle_deg_h
@@ -207,6 +205,8 @@ class laser_tracker:
                 break
         return angle, distance, distance_x
 
+    def save_image(self):
+        cv2.imwrite("image_"+str(self.frame_counter)+".jpg", self.color_msg)
 
 if __name__ == "__main__":
     rospy.init_node('test')
