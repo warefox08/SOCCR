@@ -206,7 +206,8 @@ class laser_tracker:
         return angle, distance, distance_x
 
     def save_image(self):
-        cv2.imwrite("image_"+str(self.frame_counter)+".jpg", self.color_msg)
+        rgb_image = cv2.cvtColor(self.color_msg, cv2.COLOR_RGB2BGR)
+        cv2.imwrite("image_"+str(self.frame_counter)+".jpg", rgb_image)
 
 if __name__ == "__main__":
     rospy.init_node('test')
