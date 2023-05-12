@@ -4,8 +4,6 @@ import numpy as np
 import rospy
 from cv_bridge import CvBridge, CvBridgeError
 from sensor_msgs.msg import Image
-#import pyrealsense2 as rs
-
 
 class laser_tracker:
 
@@ -21,14 +19,17 @@ class laser_tracker:
         self.color_flag = 0
         self.depth_sub = rospy.Subscriber("/camera1/aligned_depth_to_color/image_raw", Image, self.depth_callback)
         self.color_sub = rospy.Subscriber("/camera1/color/image_raw", Image, self.color_callback)
+        self.frame_counter = 0
     
     def color_callback(self, img_msg):
         #rospy.loginfo(img_msg.header)
         bridge = CvBridge()
         if not self.color_flag:
             self.color_flag = 1
+            print("color flag raised")
         try:
             #print ("gets into color callback")
+            self.frame_counter = self.frame_counter + 1
             self.color_msg = bridge.imgmsg_to_cv2(img_msg, desired_encoding="passthrough")
 
         except CvBridgeError:
@@ -39,6 +40,7 @@ class laser_tracker:
         bridge = CvBridge()
         if not self.depth_flag:
             self.depth_flag = 1
+            print("depth flag raised")
         try:
             #print ("gets into depth callback")
             self.depth_msg = bridge.imgmsg_to_cv2(img_msg, desired_encoding="passthrough")
@@ -64,22 +66,22 @@ class laser_tracker:
 
         # Make a binarised version of the image and find the coordinates of non-zero pixels 
         img = cv2.cvtColor(blue_filter,cv2.COLOR_BGR2GRAY)
-        
         img = img.astype(np.uint8) #converts the image to int type - each pixel has an int value of 0-255 rathe than floating points between 0 and 
         points = cv2.findNonZero(img) #finds coordinates of non-zero pixels 
 
         # Debug imshows - for intermediate frames 
-        cv2.imshow("hsv", hsv_frame)
-        cv2.imshow('blue', blue_filter)
-        cv2.imshow('and', img)
+        #cv2.imshow("hsv", hsv_frame)
+        #cv2.imshow('blue', blue_filter)
+        #cv2.imshow('and', img)
     
         # if laser is picked up, find its coordinates 
         if (points is not None):
             [angle, distance_x, distance_y, distance_z] = self.find_laser_cords(points,color_image)
             return 1, angle, distance_x, distance_y, distance_z
         else:
-            cv2.imshow("color_image", color_image)
-            cv2.waitKey(0) # frame by frame for debugging 
+            print ("points is None")
+            #cv2.imshow("color_image", color_image)
+            #cv2.waitKey(0) # frame by frame for debugging A
             return 0, None, None, None, None
 
     def find_laser_cords(self, points, color_image):
