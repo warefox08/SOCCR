@@ -4,8 +4,10 @@ import sys
 import os
 import rospy
 from dynamic_reconfigure.client import Client
+import math
 
-import ltf_class as lt
+#import ltf_class as lt
+import laser_tracker as lt
 import listener_class
 import goal_pose_copy_2 as gs
 
@@ -22,6 +24,18 @@ while True: #Loop infinitely
     if listener.flag == 1: #Waiting for flag to get raised when any command is sent
 
         if listener.command == "I":
+            client.update_configuration({"xy_goal_tolerance": 10.0, "yaw_goal_tolerance": 0.5})
+            laser_found = 0
+            if (tracker.color_flag and tracker.depth_flag): #If both frames have already arrived
+                laser_found, _, distance_x, distance_y = tracker.search_for_laser() #Find x and z distace
+            if laser_found:
+                listener.pub_feedback("f")  #Publish feedback to device that laser has been found 
+                angle = math.atan(distance_x/distance_y)
+                rot_z = math.sin(0.5*angle)
+                rot_w = math.cos(0.5*angle)
+                gs.move_command(0, 0, rot_z, rot_w)  # 60 deg rotation in quaternions
+            else:
+                listener.pub_feedback("n")  #Publish feedback to device that no laser found
             tracker.save_image()
             listener.pub_feedback("i")
 
