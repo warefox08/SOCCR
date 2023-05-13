@@ -1,79 +1,85 @@
+  
 #include <WiFi.h> //Library for wifi on the ESP32
-#include <ros.h>
+#include <ros.h> //Library for ROS functionality
 #include <std_msgs/String.h>
 
-#include <HardwareSerial.h>
+#include <HardwareSerial.h> //Library for UART serial comms
 
-WiFiClient espClient; //WiFi Client Obj
-const char* ssid = "qinle";
-const char* password = "qinle010108";
-IPAddress server(192, 168, 43, 185); //Public IP of device listening
-const uint16_t serverPort = 11411; //Default ROS Port
+WiFiClient espClient; //WiFi Client Object
 
+const char* ssid = "X3";
+const char* password = "password";
+IPAddress server(192, 168, 59, 47); //Public IP of device listening
+const uint16_t serverPort = 11411; //ROSserial Port (default is 11411)
+
+int WF=0;//Wifi Connection flag 1 is connected, <1 is disconnected
 #define LED 2
 #define LENGTH(X) (sizeof X/sizeof X[0])
 
-
-HardwareSerial RCV(2);
+HardwareSerial RCV(2); //UART port pair number
 
 void messageCb( const std_msgs::String& Feedback) {
-  Serial.write("Received:");
-  Serial.write(Feedback.data);
-  RCV.write(Feedback.data);
+  RCV.write(Feedback.data); //Forward feedback to spresense
 }
 
-ros::NodeHandle nh;
+ros::NodeHandle nh; //Node hanlde for local ROS node
 std_msgs::String str_msg;
-ros::Publisher chatter("Team10", &str_msg);
-ros::Subscriber<std_msgs::String> chitter("Feedback", &messageCb);
+ros::Publisher output("Commands", &str_msg); //Publisher for commands
+ros::Subscriber<std_msgs::String> feedback("Feedback", &messageCb);  //Subscriber for feedback  
 
-
-bool transmit = false;
-/*
-  void IRAM_ATTR trans(){
-    transmit=true; //Interrupt function for the button
-  }
-*/
 void setup() {
-  Serial.begin(9600);//Serial for debugging
   RCV.begin(115200, SERIAL_8N1, 16, 17); //Serial to Spresense
   configureWIFI();//Configure Comms
   nh.getHardware()->setConnection(server, serverPort); //Configure ROS node socket
-  nh.initNode();
-  nh.advertise(chatter);
-  nh.subscribe(chitter);
-  pinMode(LED, OUTPUT);
+  nh.initNode(); 
+  nh.advertise(output); //Advertise the publisher to the ROS system
+  nh.subscribe(feedback); //Subcribe to the Feedback Topic
   delay(1000);
 }
-
 void loop() {
+  if ((WiFi.status()==(WL_CONNECTED))&&(WF<=1)){
+    RCV.write('w'); //Command that displays the connected icon on the spresense
+    WF++; //Incrementing the Wifi Flag
+  }else if(WiFi.status()!=(WL_CONNECTED)){
+    RCV.write('q'); //Command that 
+    WF--;  //Decrementing the Wifi Flag
+  }
+  
   if (RCV.available()) {
-    char cmd = RCV.read();
-    mapcmd(cmd);
-    chatter.publish(&str_msg); //Send Message
-    Serial.print(str_msg.data);
+    char cmd = RCV.read(); //Reads the serial data from UART from the spresense
+    mapcmd(cmd); //Maps the char to a string to maintain compatibility with rossiarl
+    output.publish(&str_msg); //Publishes to rosserial
   }
   nh.spinOnce();
   delay(100);
-
 }
+
 void configureWIFI() {
   WiFi.begin(ssid, password);//Begins Wifi Connection
-  while (WiFi.status() != WL_CONNECTED) {//Block Until Connected
+  while (WiFi.status() != WL_CONNECTED) {//Wait for the wifi to connect
     delay(1000);
-    Serial.print(".");
   }
-  Serial.println("Connection Established at:");
-  Serial.println(WiFi.localIP());
-  digitalWrite(LED, HIGH);
 }
+
 void mapcmd(int cmd){
-  char commandin[4] = {'M', 'S', 'R', 'L'};
-  char* commandout[4] = {"M", "S", "R", "L"};
-  
-  for (int i = 0; (i < LENGTH(commandin)); i++) {
-    if (cmd == commandin[i]) {
-      str_msg.data = commandout[i];
-    }
+  switch (cmd){
+    case 'M':
+      str_msg.data = "M";
+      break;
+    case 'S':
+      str_msg.data = "S";
+      break;
+    case 'R':
+     str_msg.data = "R";
+      break;
+    case 'L':
+     str_msg.data = "L";
+      break;
+    case 'P':
+     str_msg.data = "P";
+     break;
+    default:
+    str_msg.data= "";
+    break;
   }
 }
