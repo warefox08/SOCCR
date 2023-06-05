@@ -104,7 +104,7 @@ class laser_tracker:
         distance_z = -(distance_x*((p2-self.c_y)/self.f_y))
 
         # log_data(p1, p2, distance_x, angle_deg_h)
-        self.show_data(color_image, p1, p2, distance_x, distance_y, distance_z) # was returning distance_origin ?
+        #self.show_data(color_image, p1, p2, distance_x, distance_y, distance_z) # was returning distance_origin ?
 
         return angle_deg_h, distance_x, distance_y, distance_z
     
@@ -133,6 +133,9 @@ class laser_tracker:
             if key == 27: # esc key to break 
                 break
         return angle, distance_x, distance_y, distance_z
+
+    def save_image(self):
+        cv2.imwrite("image_"+str(self.frame_counter)+".jpg", self.color_msg)
 
 
 if __name__ == "__main__":
