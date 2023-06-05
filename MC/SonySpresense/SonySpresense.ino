@@ -1,4 +1,4 @@
- #include <SoftwareSerial.h>
+#include <SoftwareSerial.h>
 #include <ros.h>
 #include <std_msgs/String.h>
 
@@ -30,15 +30,15 @@ static int guilen = 3; //Length of Gui Page
 static int guipages = 3; //Number of gui page
 char guipos = 0; //Current GUI position
 char guipg = 0; //Current page of GUI
-char* guitext[3][3] = {{"Aim", "Turn", "Photo"},{"INT1", "INT2", "INT3"},{"Move","Back","Back & Off"}};
-char commandtxt[3][3] = {{'A', 'T', 'P'}, {'X', 'Y', 'Z'},{'M','B','O'}};
+char* guitext[3][3] = {{"Aim", "Turn", "Photo"}, {"INT1", "INT2", "INT3"}, {"Move", "Back", "Back & Off"}};
+char commandtxt[3][3] = {{'A', 'T', 'P'}, {'X', 'Y', 'Z'}, {'M', 'B', 'O'}};
 char command = 'A';
 
 
 bool buttonpress[3] = {false, false, false}; //Debounce flags
-bool DF = 1; //Default Menu Flag, If a menu change resukts in 
+bool DF = 1; //Default Menu Flag, If a menu change resukts in
 bool LF = 0; //Laser Flag
-bool LIF = 0; //Left Intterupt flag, 1 if in turning mode 
+bool LIF = 0; //Left Intterupt flag, 1 if in turning mode
 bool RIF = 0; //Right Interrupt Flag, 1 if in turning mode
 
 int laseroff() {
@@ -52,8 +52,8 @@ void laseron() {
   LF = 1;
   tft.fillCircle(230, 8, 4, ST77XX_BLUE);
 }
-void fire(){ //Fire command that lets only the 'M','P' and 'S' command get transmitted
-  switch(command){
+void fire() { //Fire command that lets only the 'M','P' and 'S' command get transmitted
+  switch (command) {
     case 'M':
       Serial2.write(command);
       break;
@@ -68,30 +68,30 @@ void fire(){ //Fire command that lets only the 'M','P' and 'S' command get trans
     default:
       screenstate(command);
       break;
-  }  
+  }
 }
 void guiup() {
   if (guipos > 0) {
     tft.setCursor(10, YO + guipos * LW);
     tft.setTextColor(ST77XX_BLACK);
     tft.print(">");  //Delete old cursor
-    
+
     guipos--; //Decrement gui position
     command = commandtxt[guipg][guipos]; //Change active command
-    
-    tft.setCursor(10, YO+guipos*LW);
+
+    tft.setCursor(10, YO + guipos * LW);
     tft.setTextColor(ST77XX_WHITE);
     tft.print(">"); //Print new cursor
-  } else if ((guipos==0) && (guipg!=0) && (guipg!=2)) {
-    tft.setCursor(10, YO+guipos*LW);
+  } else if ((guipos == 0) && (guipg != 0) && (guipg != 2)) {
+    tft.setCursor(10, YO + guipos * LW);
     tft.setTextColor(ST77XX_BLACK);
     tft.print(">"); //Delete old cursor
-    
+
     guipos = guilen - 1; //Increment gui position
     guipg--;
     command = commandtxt[guipg][guipos]; //Change active command
     printmenu(); //Change to new page
-  } 
+  }
 }
 
 void guidown() {
@@ -99,18 +99,18 @@ void guidown() {
     tft.setCursor(10, YO + guipos * LW);
     tft.setTextColor(ST77XX_BLACK);
     tft.print(">"); //Delete old cursor
-    
+
     guipos++; //Increment gui position
     command = commandtxt[guipg][guipos]; //Change active command
-    
-    tft.setCursor(10, YO+guipos*LW);
+
+    tft.setCursor(10, YO + guipos * LW);
     tft.setTextColor(ST77XX_WHITE);
     tft.print(">"); //Print new cursor
-  } else if ((guipos == (guilen-1)) && (guipg<(guipages-2))) {
-    tft.setCursor(10, YO+guipos*LW);
+  } else if ((guipos == (guilen - 1)) && (guipg < (guipages - 2))) {
+    tft.setCursor(10, YO + guipos * LW);
     tft.setTextColor(ST77XX_BLACK);
     tft.print(">"); //Delete old cursor
-    
+
     guipos = 0; //Increment gui position
     guipg++;
     command = commandtxt[guipg][guipos]; //Change active command
@@ -118,10 +118,10 @@ void guidown() {
   }
 }
 
-void Tleft(){//ISR for left button in turn mode
+void Tleft() { //ISR for left button in turn mode
   Serial2.write('L');
 }
-void Tright(){//ISR for right button in turn mode
+void Tright() { //ISR for right button in turn mode
   Serial2.write('R');
 }
 void left() {//ISR for left button in menu mode
@@ -144,7 +144,7 @@ void centre() {//ISR for centre/fire/trigger button
   static unsigned long OldIntTimeC;
   unsigned long IntTimeC = millis();
   if ((IntTimeC - OldIntTimeC) > 100) {
-      fire();
+    fire();
   }
   OldIntTimeC = IntTimeC;
 }
@@ -231,22 +231,22 @@ void screenstate(char ScrSt) {
     case 'A': //Menu State for Aiming
       clr();
       laseron();
-      guipos=0;
-      guipg=2;
+      guipos = 0;
+      guipg = 2;
       printmenu();
       command = commandtxt[guipg][guipos];
-      DF = 0; 
+      DF = 0;
       break;
     case 'O': //Exiting aiming sate and turning off laser
       clr();
       laseroff();
-      guipos=0;
-      guipg=0;
+      guipos = 0;
+      guipg = 0;
       printmenu();
       command = commandtxt[guipg][guipos];
       DF = 1;
       break;
-    case 'f': //State for while the robot is in motion 
+    case 'f': //State for while the robot is in motion
       detachInterrupt(digitalPinToInterrupt(PBL));
       detachInterrupt(digitalPinToInterrupt(PBR));
       LIF = 0;
@@ -268,17 +268,21 @@ void screenstate(char ScrSt) {
       LIF = 1;
       RIF = 1;
       clr();
-      tft.setCursor(0, YO + 0);
-      tft.print("Turning mode initated \nPress Left or\nRight to turnPress Fire tostop");
+      tft.setCursor(5, YO + LW);
+      tft.print("<Left  Right>");
       command = 'B';
       DF = 0;
       break;
     default: //Default menu state
       if (DF == 0) {
 
-        //Reset Interrupts to default state 
-        if  (LIF == 1){detachInterrupt(digitalPinToInterrupt(PBL));}
-        if (RIF == 1){detachInterrupt(digitalPinToInterrupt(PBR));}
+        //Reset Interrupts to default state
+        if  (LIF == 1) {
+          detachInterrupt(digitalPinToInterrupt(PBL));
+        }
+        if (RIF == 1) {
+          detachInterrupt(digitalPinToInterrupt(PBR));
+        }
         delay (100);
         attachInterrupt(digitalPinToInterrupt(PBL), left, FALLING);
         attachInterrupt(digitalPinToInterrupt(PBR), right, FALLING);
@@ -300,11 +304,11 @@ void printmenu() {//Function that prints the menu updates the battery level
   tft.setCursor(10, YO + guipos * LW);
   tft.setTextColor(ST77XX_WHITE);
   tft.print(">");
-  tft.drawLine(0, guilen*LW+YO,240,guilen*LW+YO, ST77XX_WHITE);
+  tft.drawLine(0, guilen * LW + YO, 240, guilen * LW + YO, ST77XX_WHITE);
   printbl();
 }
 
-void printbl(){//Function that prints the battery level indicator
+void printbl() { //Function that prints the battery level indicator
   //Values obtained from the EasyPack XL charge curve in datasheet
   int lvl = analogRead(A2);
   tft.drawRect(0, 0, 30, 18, ST77XX_WHITE);
@@ -341,7 +345,7 @@ void tftsetup() {
   tft.drawCircle(210, 8, 8, ST77XX_WHITE); //Acknowledgement indicator circle
   tft.drawCircle(210, 8, 7, ST77XX_WHITE);
   printbl();
-  
+
   //Print UI menu
   guipos = 0;
   printmenu();
