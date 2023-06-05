@@ -7,9 +7,9 @@
 
 WiFiClient espClient; //WiFi Client Object
 
-const char* ssid = "X3";
-const char* password = "password";
-IPAddress server(192, 168, 59, 47); //Public IP of device listening
+const char* ssid = "ESP32";
+const char* password = "14531453";
+IPAddress server(192, 168, 178, 47); //Public IP of device listening
 const uint16_t serverPort = 11411; //ROSserial Port (default is 11411)
 
 int WF=0;//Wifi Connection flag 1 is connected, <1 is disconnected
@@ -24,7 +24,7 @@ void messageCb( const std_msgs::String& Feedback) {
 
 ros::NodeHandle nh; //Node hanlde for local ROS node
 std_msgs::String str_msg;
-ros::Publisher output("Commands", &str_msg); //Publisher for commands
+ros::Publisher output("Team10", &str_msg); //Publisher for commands
 ros::Subscriber<std_msgs::String> feedback("Feedback", &messageCb);  //Subscriber for feedback  
 
 void setup() {

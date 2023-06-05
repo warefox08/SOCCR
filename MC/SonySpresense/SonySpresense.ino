@@ -1,4 +1,4 @@
-#include <SoftwareSerial.h>
+ #include <SoftwareSerial.h>
 #include <ros.h>
 #include <std_msgs/String.h>
 
@@ -56,7 +56,6 @@ void fire(){ //Fire command that lets only the 'M','P' and 'S' command get trans
   switch(command){
     case 'M':
       Serial2.write(command);
-      screenstate(command);
       break;
     case 'P':
       Serial2.write(command);
@@ -170,10 +169,10 @@ void loop() {
     char cmd = Serial2.read(); //Incoming feedback from ESP32
     switch (cmd) { //Switch statements for parsing type of command
       case 'a': //Flashes green indicator that command has been ackowledged
-      tft.fillCircle(210, 8, 4, ST77XX_GREEN);
-      delay(1500);
-      tft.fillCircle(210, 8, 4, ST77XX_BLACK);
-      break;
+        tft.fillCircle(210, 8, 4, ST77XX_GREEN);
+        delay(1500);
+        tft.fillCircle(210, 8, 4, ST77XX_BLACK);
+        break;
       case 'n': //Briefly flashes message on screen
         delay(100);
         tft.setTextColor(ST77XX_WHITE);
@@ -185,6 +184,8 @@ void loop() {
         tft.print("Laser Not Found");
         break;
       case 'f'://Briefly flashes message on screen
+        laseroff();
+        screenstate('f');
         tft.setTextColor(ST77XX_WHITE);
         tft.setCursor(0, YO + 128);
         tft.print("Laser Found");
@@ -193,6 +194,7 @@ void loop() {
         tft.setCursor(0, YO + 128);
         tft.print("Laser Found");
         laseroff();
+        screenstate('f');
         break;
       case 'c': //Briefly flashes message on screen and returns to default menu state
         screenstate(cmd);
@@ -244,7 +246,7 @@ void screenstate(char ScrSt) {
       command = commandtxt[guipg][guipos];
       DF = 1;
       break;
-    case 'M': //State for while the robot is in motion 
+    case 'f': //State for while the robot is in motion 
       detachInterrupt(digitalPinToInterrupt(PBL));
       detachInterrupt(digitalPinToInterrupt(PBR));
       LIF = 0;
@@ -255,7 +257,7 @@ void screenstate(char ScrSt) {
       command = 'S';
       clr();
       tft.setCursor(0, YO + 0);
-      tft.print("Movement in\nprogress  \nPress fire tostop");
+      tft.print("> Stop");
       DF = 0;
       break;
     case 'T': //State for the turning mode
