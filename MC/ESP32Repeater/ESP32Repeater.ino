@@ -9,14 +9,14 @@ WiFiClient espClient; //WiFi Client Object
 
 const char* ssid = "BLA-L09"; //Luka
 const char* password = "12345678"; //Luka
+IPAddress server(192, 168, 43, 185); //Public IP of device listening Qin/Luka
 
 //const char* ssid = "qinle"; //Qin
 //const char* password = "qinle010108"; //Qin
+//IPAddress server(192, 168, 43, 185); //Public IP of device listening Qin/Luka
 
 //const char* ssid = "ESP32"; //Trey
 //const char* password = "14531453"; //Trey
-
-IPAddress server(192, 168, 43, 185); //Public IP of device listening Qin/Luka
 //IPAddress server(192, 168, 178, 47); //Public IP of device listening Trey
 
 const uint16_t serverPort = 11411; //ROSserial Port (default is 11411)
