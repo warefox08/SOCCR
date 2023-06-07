@@ -193,8 +193,6 @@ void loop() {
         tft.setTextColor(ST77XX_BLACK);
         tft.setCursor(0, YO + 128);
         tft.print("Laser Found");
-        laseroff();
-        screenstate('f');
         break;
       case 'c': //Briefly flashes message on screen and returns to default menu state
         screenstate(cmd);
